@@ -12,7 +12,38 @@ function Window
 
     @: ->
         
+        Neutralino.events.on 'clientConnect'    @onClientConnect
+        Neutralino.events.on 'appClientConnect' @onAppClientConnect
+        
         post.on 'menuAction' @onMenuAction
+        
+        window.titlebar = new Title icon:'./icons/app.png'
+        
+        document.addEventListener 'DOMContentLoaded' @onDomLoaded
+            
+    onDomLoaded: => 
+        
+        dragging = false
+        posX = 0
+        posY = 0
+        
+        draggable = document.getElementById 'titlebar'
+          
+        draggable.onmousedown = (e) ->
+    
+            posX = e.pageX
+            posY = e.pageY
+            dragging = true
+            null
+          
+        window.onmouseup = (e) ->
+            dragging = false
+            null
+          
+        document.onmousemove = (e) -> 
+            if dragging
+                Neutralino.window.move e.screenX - posX, e.screenY - posY
+            null
         
     toggleMaximize: =>
         
@@ -22,6 +53,9 @@ function Window
             else
                 Neutralino.window.maximize()
         
+    onClientConnect:    (num) => log 'onClientConnect' num
+    onAppClientConnect: (num) => log 'onAppClientConnect' num
+                
     onMenuAction: (action) =>
         
         switch action.toLowerCase()

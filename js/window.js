@@ -11,8 +11,45 @@ Window = (function ()
     function Window ()
     {
         this["onMenuAction"] = this["onMenuAction"].bind(this)
+        this["onAppClientConnect"] = this["onAppClientConnect"].bind(this)
+        this["onClientConnect"] = this["onClientConnect"].bind(this)
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
+        this["onDomLoaded"] = this["onDomLoaded"].bind(this)
+        Neutralino.events.on('clientConnect',this.onClientConnect)
+        Neutralino.events.on('appClientConnect',this.onAppClientConnect)
         post.on('menuAction',this.onMenuAction)
+        window.titlebar = new Title({icon:'./icons/app.png'})
+        document.addEventListener('DOMContentLoaded',this.onDomLoaded)
+    }
+
+    Window.prototype["onDomLoaded"] = function ()
+    {
+        var draggable, dragging, posX, posY
+
+        dragging = false
+        posX = 0
+        posY = 0
+        draggable = document.getElementById('titlebar')
+        draggable.onmousedown = function (e)
+        {
+            posX = e.pageX
+            posY = e.pageY
+            dragging = true
+            return null
+        }
+        window.onmouseup = function (e)
+        {
+            dragging = false
+            return null
+        }
+        return document.onmousemove = function (e)
+        {
+            if (dragging)
+            {
+                Neutralino.window.move(e.screenX - posX,e.screenY - posY)
+            }
+            return null
+        }
     }
 
     Window.prototype["toggleMaximize"] = function ()
@@ -28,6 +65,16 @@ Window = (function ()
                 return Neutralino.window.maximize()
             }
         })
+    }
+
+    Window.prototype["onClientConnect"] = function (num)
+    {
+        console.log('onClientConnect',num)
+    }
+
+    Window.prototype["onAppClientConnect"] = function (num)
+    {
+        console.log('onAppClientConnect',num)
     }
 
     Window.prototype["onMenuAction"] = function (action)

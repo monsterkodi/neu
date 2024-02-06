@@ -52,6 +52,7 @@ class Poster extends EventTarget
     {
         var event
 
+        Neutralino.debug.log(type,args,id)
         event = new Event(POST)
         event.event = type
         event.args = args

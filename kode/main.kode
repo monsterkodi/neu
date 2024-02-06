@@ -2,61 +2,26 @@
 import Title from './title.js'
 import Window from './window.js'
 
-setTray = () ->
+setTray = ->
     
-    if NL_MODE != "window"
-        console.log("INFO: Tray menu is only available in the window mode.");
-        return
-    tray =
-        icon: "/js/icons/menu.png"
-        menuItems: [ {id: "QUIT", text: "Quit"} ]
-
-    Neutralino.os.setTray tray
-    null
+    if NL_MODE == 'window'
+        Neutralino.os.setTray
+            icon: '/js/icons/menu.png'
+            menuItems: [ {id: 'QUIT', text: 'Quit'} ]
 
 onTrayMenuItemClicked = (event) ->
 
-    switch event.detail.id
-        when "QUIT"
-            Neutralino.app.exit()
-    null
+    if event.detail.id == 'QUIT' ➜ Neutralino.app.exit()
 
 onWindowClose = () ->
+    
     Neutralino.app.exit()
-    null
 
 Neutralino.init()
 
-Neutralino.events.on "trayMenuItemClicked", onTrayMenuItemClicked
-Neutralino.events.on "windowClose", onWindowClose
+Neutralino.events.on 'trayMenuItemClicked'  onTrayMenuItemClicked
+Neutralino.events.on 'windowClose'          onWindowClose
 
 setTray()
 
-window = new Window
-
-window.titlebar = new Title icon:'./icons/app.png'
-
-document.addEventListener 'DOMContentLoaded', () => 
-
-    dragging = false
-    posX = 0
-    posY = 0
-    
-    draggable = document.getElementById 'titlebar'
-      
-    draggable.onmousedown = (e) ->
-        # log e
-        posX = e.pageX
-        posY = e.pageY
-        dragging = true
-        null
-      
-    window.onmouseup = (e) ->
-        dragging = false
-        null
-      
-    document.onmousemove = (e) -> 
-        if dragging
-            # log 'move' e.screenX - posX, e.screenY - posY
-            Neutralino.window.move e.screenX - posX, e.screenY - posY
-        null
+win = new Window

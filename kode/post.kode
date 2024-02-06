@@ -34,6 +34,7 @@ class Poster extends EventTarget
      
     send: (receivers, type, args, id) -> 
     
+        Neutralino.debug.log type, args, id
         event = new Event POST
         event.event = type
         event.args = args
