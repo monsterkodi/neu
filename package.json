@@ -1,0 +1,20 @@
+{
+  "name": "neu",
+  "description": "neutralino app",
+  "version": "0.1.0",
+  "keywords": [
+    "neutralino",
+    "app"
+  ],
+  "license": "Unlicense",
+  "author": "monsterkodi",
+  "repository": "github:monsterkodi/neu.git",
+  "main": "js/index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/kode -Ho js kode/*.kode"
+  },
+  "dependencies": {
+    "kode": "github:monsterkodi/kode",
+    "kxk": "github:monsterkodi/kxk"
+  }
+}

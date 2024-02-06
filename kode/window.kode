@@ -1,0 +1,33 @@
+###
+000   000  000  000   000  0000000     0000000   000   000
+000 0 000  000  0000  000  000   000  000   000  000 0 000
+000000000  000  000 0 000  000   000  000   000  000000000
+000   000  000  000  0000  000   000  000   000  000   000
+00     00  000  000   000  0000000     0000000   00     00
+###
+
+import post from './post.js'
+
+function Window
+
+    @: ->
+        
+        post.on 'menuAction' @onMenuAction
+        
+    toggleMaximize: =>
+        
+        Neutralino.window.isMaximized().then (isMaximized) ->
+            if isMaximized
+                Neutralino.window.unmaximize()
+            else
+                Neutralino.window.maximize()
+        
+    onMenuAction: (action) =>
+        
+        switch action.toLowerCase()
+             
+            'maximize'  ➜ @toggleMaximize()
+            'minimize'  ➜ Neutralino.window.minimize()
+            'close'     ➜ Neutralino.app.exit()
+
+export Window

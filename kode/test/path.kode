@@ -1,0 +1,33 @@
+
+path = require '../path'
+
+▸ path
+
+    ▸ normalize
+        
+        path.normalize '/' ▸ '/'
+        path.normalize '' ▸ ''
+        path.normalize 'abc' ▸ 'abc'
+        path.normalize 'a/b/c' ▸ 'a/b/c'
+        path.normalize 'a/../c' ▸ 'c'
+        path.normalize 'a/.././c' ▸ 'c'
+        path.normalize '/a/.././c' ▸ '/c'
+        path.normalize '/a/../b/../c/..' ▸ '/'
+        path.normalize 'a/../b/../c/..' ▸ '.'
+        path.normalize 'a/b/c/d/../../../' ▸ 'a/'
+        path.normalize 'a/b/c/d/../../..' ▸ 'a'
+        path.normalize '/a/b/c/d/../../..' ▸ '/a'
+        path.normalize '/a/b/c/d/../../../' ▸ '/a/'
+        
+        path.normalize '\\' ▸ '/'
+        path.normalize 'a\\b\\c' ▸ 'a/b/c'
+        path.normalize 'a\\..\\c' ▸ 'c'
+        path.normalize 'a\\..\\.\\c' ▸ 'c'
+        path.normalize '\\a\\..\\.\\c' ▸ '/c'
+        path.normalize '\\a\\..\\b\\..\\c\\..' ▸ '/'
+        path.normalize 'a\\..\\b\\..\\c\\..' ▸ '.'
+        path.normalize 'a\\b\\c\\d\\..\\..\\..\\' ▸ 'a/'
+        path.normalize 'a\\b\\c\\d\\..\\..\\..' ▸ 'a'
+        path.normalize '\\a\\b\\c\\d\\..\\..\\..' ▸ '/a'
+        path.normalize '\\a\\b\\c\\d\\..\\..\\..\\' ▸ '/a/'
+        

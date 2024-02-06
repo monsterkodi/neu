@@ -1,0 +1,39 @@
+
+slash = require '../slash'
+
+▸ slash
+
+    ▸ path
+        
+        slash.path '/' ▸ '/'
+        slash.path '' ▸ ''
+        slash.path 'abc' ▸ 'abc'
+        slash.path 'a/b/c' ▸ 'a/b/c'
+        slash.path 'a/../c' ▸ 'c'
+        slash.path 'a/.././c' ▸ 'c'
+        slash.path '/a/.././c' ▸ '/c'
+        slash.path '/a/../b/../c/..' ▸ '/'
+        slash.path 'a/../b/../c/..' ▸ '.'
+        slash.path 'a/b/c/d/../../../' ▸ 'a/'
+        slash.path 'a/b/c/d/../../..' ▸ 'a'
+        slash.path '/a/b/c/d/../../..' ▸ '/a'
+        slash.path '/a/b/c/d/../../../' ▸ '/a/'
+        
+        slash.path '\\' ▸ '/'
+        slash.path 'a\\b\\c' ▸ 'a/b/c'
+        slash.path 'a\\..\\c' ▸ 'c'
+        slash.path 'a\\..\\.\\c' ▸ 'c'
+        slash.path '\\a\\..\\.\\c' ▸ '/c'
+        slash.path '\\a\\..\\b\\..\\c\\..' ▸ '/'
+        slash.path 'a\\..\\b\\..\\c\\..' ▸ '.'
+        slash.path 'a\\b\\c\\d\\..\\..\\..\\' ▸ 'a/'
+        slash.path 'a\\b\\c\\d\\..\\..\\..' ▸ 'a'
+        slash.path '\\a\\b\\c\\d\\..\\..\\..' ▸ '/a'
+        slash.path '\\a\\b\\c\\d\\..\\..\\..\\' ▸ '/a/'
+        
+    ▸ join
+    
+        slash.join 'a' 'b' ▸ 'a/b'
+        slash.join 'a/..' 'b' ▸ './b'
+        slash.join 'a' '../b' ▸ './b'
+        
