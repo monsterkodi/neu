@@ -5,18 +5,23 @@ var _k_
 var Window
 
 import post from './post.js'
+import Title from './title.js'
 
 Window = (function ()
 {
     function Window ()
     {
         this["onMenuAction"] = this["onMenuAction"].bind(this)
-        this["onAppClientConnect"] = this["onAppClientConnect"].bind(this)
         this["onClientConnect"] = this["onClientConnect"].bind(this)
+        this["onAppClientConnect"] = this["onAppClientConnect"].bind(this)
+        this["onWindowBlur"] = this["onWindowBlur"].bind(this)
+        this["onWindowFocus"] = this["onWindowFocus"].bind(this)
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
         this["onDomLoaded"] = this["onDomLoaded"].bind(this)
         Neutralino.events.on('clientConnect',this.onClientConnect)
         Neutralino.events.on('appClientConnect',this.onAppClientConnect)
+        Neutralino.events.on('windowFocus',this.onWindowFocus)
+        Neutralino.events.on('windowBlur',this.onWindowBlur)
         post.on('menuAction',this.onMenuAction)
         window.titlebar = new Title({icon:'./icons/app.png'})
         document.addEventListener('DOMContentLoaded',this.onDomLoaded)
@@ -67,14 +72,24 @@ Window = (function ()
         })
     }
 
-    Window.prototype["onClientConnect"] = function (num)
+    Window.prototype["onWindowFocus"] = function (event)
     {
-        console.log('onClientConnect',num)
+        console.log('onFocus',event.detail)
     }
 
-    Window.prototype["onAppClientConnect"] = function (num)
+    Window.prototype["onWindowBlur"] = function (event)
     {
-        console.log('onAppClientConnect',num)
+        console.log('onBlur',event.detail)
+    }
+
+    Window.prototype["onAppClientConnect"] = function (event)
+    {
+        console.log('onAppClientConnect',event.detail)
+    }
+
+    Window.prototype["onClientConnect"] = function (event)
+    {
+        console.log('onClientConnect',event.detail)
     }
 
     Window.prototype["onMenuAction"] = function (action)
@@ -88,7 +103,7 @@ Window = (function ()
                 return Neutralino.window.minimize()
 
             case 'close':
-                return Neutralino.app.exit()
+                return Neutralino.window.hide()
 
         }
 

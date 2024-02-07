@@ -1,17 +1,21 @@
 
-import Title from './title.js'
 import Window from './window.js'
 
 setTray = ->
     
     if NL_MODE == 'window'
         Neutralino.os.setTray
-            icon: '/js/icons/menu.png'
-            menuItems: [ {id: 'QUIT', text: 'Quit'} ]
+            icon: '/js/icons/menu@2x.png'
+            menuItems: [ 
+                {id: 'SHOW' text: 'Show'}
+                {id: 'QUIT' text: 'Quit'}
+                ]
 
 onTrayMenuItemClicked = (event) ->
 
-    if event.detail.id == 'QUIT' ➜ Neutralino.app.exit()
+    switch event.detail.id 
+        'SHOW' ➜ Neutralino.window.setAlwaysOnTop(true); Neutralino.window.show(); Neutralino.window.focus(); Neutralino.window.setAlwaysOnTop(false)
+        'QUIT' ➜ Neutralino.app.exit()
 
 onWindowClose = () ->
     
@@ -19,8 +23,8 @@ onWindowClose = () ->
 
 Neutralino.init()
 
-Neutralino.events.on 'trayMenuItemClicked'  onTrayMenuItemClicked
-Neutralino.events.on 'windowClose'          onWindowClose
+Neutralino.events.on 'trayMenuItemClicked' onTrayMenuItemClicked
+Neutralino.events.on 'windowClose'         onWindowClose
 
 setTray()
 

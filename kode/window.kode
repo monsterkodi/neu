@@ -7,6 +7,7 @@
 ###
 
 import post from './post.js'
+import Title from './title.js'
 
 function Window
 
@@ -14,6 +15,8 @@ function Window
         
         Neutralino.events.on 'clientConnect'    @onClientConnect
         Neutralino.events.on 'appClientConnect' @onAppClientConnect
+        Neutralino.events.on 'windowFocus'      @onWindowFocus
+        Neutralino.events.on 'windowBlur'       @onWindowBlur
         
         post.on 'menuAction' @onMenuAction
         
@@ -53,8 +56,11 @@ function Window
             else
                 Neutralino.window.maximize()
         
-    onClientConnect:    (num) => log 'onClientConnect' num
-    onAppClientConnect: (num) => log 'onAppClientConnect' num
+    onWindowFocus: (event) => log 'onFocus' event.detail
+    onWindowBlur:  (event) => log 'onBlur'  event.detail
+    
+    onAppClientConnect: (event) => log 'onAppClientConnect' event.detail
+    onClientConnect:    (event) => log 'onClientConnect'    event.detail
                 
     onMenuAction: (action) =>
         
@@ -62,6 +68,7 @@ function Window
              
             'maximize'  ➜ @toggleMaximize()
             'minimize'  ➜ Neutralino.window.minimize()
-            'close'     ➜ Neutralino.app.exit()
+            # 'close'     ➜ Neutralino.app.exit()
+            'close'     ➜ Neutralino.window.hide()
 
 export Window

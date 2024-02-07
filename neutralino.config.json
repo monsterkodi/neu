@@ -11,12 +11,13 @@
   "tokenSecurity": "one-time",
   "logging": {
     "enabled": true,
-    "writeToLogFile": true
+    "writeToLogFile": false
   },
   "nativeAllowList": [
     "os.*",
     "app.*",
     "debug.*",
+    "events.*",
     "window.*",
     "storage.*",
     "computer.*",

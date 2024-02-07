@@ -2,5 +2,6 @@
 bin
 dist
 neutralinojs
+neutralino.js
 node_modules
 neutralinojs.log

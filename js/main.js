@@ -4,23 +4,31 @@ var _k_
 
 var onTrayMenuItemClicked, onWindowClose, setTray, win
 
-import Title from './title.js'
 import Window from './window.js'
 
 setTray = function ()
 {
     if (NL_MODE === 'window')
     {
-        return Neutralino.os.setTray({icon:'/js/icons/menu.png',menuItems:[{id:'QUIT',text:'Quit'}]})
+        return Neutralino.os.setTray({icon:'/js/icons/menu@2x.png',menuItems:[{id:'SHOW',text:'Show'},{id:'QUIT',text:'Quit'}]})
     }
 }
 
 onTrayMenuItemClicked = function (event)
 {
-    if (event.detail.id === 'QUIT')
+    switch (event.detail.id)
     {
-        return Neutralino.app.exit()
+        case 'SHOW':
+            Neutralino.window.setAlwaysOnTop(true)
+            Neutralino.window.show()
+            Neutralino.window.focus()
+            return Neutralino.window.setAlwaysOnTop(false)
+
+        case 'QUIT':
+            return Neutralino.app.exit()
+
     }
+
 }
 
 onWindowClose = function ()
