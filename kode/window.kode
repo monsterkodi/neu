@@ -6,17 +6,20 @@
 00     00  000  000   000  0000000     0000000   00     00
 ###
 
-import post from './post.js'
+import kpos  from './pos.js'
+import post  from './post.js'
 import Title from './title.js'
+import Drag  from './drag.js'
+
+mousePos = kpos 0 0
+windowPos = kpos 0 0
+getMousePos = (cb) -> Neutralino.computer.getMousePosition().catch((e)->error e).then (p) -> mousePos.copy p; cb? mousePos
+getWindowPos = (cb) -> Neutralino.window.getPosition().catch((e)->error e).then (p) -> windowPos.copy p; cb? windowPos
+setWindowPos = (p, cb) -> Neutralino.window.move(p.x,p.y).catch((e)->error e).then cb
 
 function Window
 
     @: ->
-        
-        Neutralino.events.on 'clientConnect'    @onClientConnect
-        Neutralino.events.on 'appClientConnect' @onAppClientConnect
-        Neutralino.events.on 'windowFocus'      @onWindowFocus
-        Neutralino.events.on 'windowBlur'       @onWindowBlur
         
         post.on 'menuAction' @onMenuAction
         
@@ -26,28 +29,20 @@ function Window
             
     onDomLoaded: => 
         
-        dragging = false
-        posX = 0
-        posY = 0
+        lastMousePos = kpos 0 0
+        mouseDelta   = kpos 0 0
         
-        draggable = document.getElementById 'titlebar'
-          
-        draggable.onmousedown = (e) ->
-    
-            posX = e.pageX
-            posY = e.pageY
-            dragging = true
-            null
-          
-        window.onmouseup = (e) ->
-            dragging = false
-            null
-          
-        document.onmousemove = (e) -> 
-            if dragging
-                Neutralino.window.move e.screenX - posX, e.screenY - posY
-            null
-        
+        @drag = new Drag 
+            target:'titlebar'
+            onStart: -> getMousePos (mp) -> lastMousePos.copy mp
+            onMove:  -> 
+                getMousePos (mp) ->
+                    getWindowPos (pos) =>
+                        mouseDelta.copy(mp).sub lastMousePos
+                        lastMousePos.copy mp 
+                        mouseDelta.add pos
+                        setWindowPos mouseDelta
+            
     toggleMaximize: =>
         
         Neutralino.window.isMaximized().then (isMaximized) ->
@@ -59,16 +54,12 @@ function Window
     onWindowFocus: (event) => log 'onFocus' event.detail
     onWindowBlur:  (event) => log 'onBlur'  event.detail
     
-    onAppClientConnect: (event) => log 'onAppClientConnect' event.detail
-    onClientConnect:    (event) => log 'onClientConnect'    event.detail
-                
     onMenuAction: (action) =>
         
         switch action.toLowerCase()
              
             'maximize'  ➜ @toggleMaximize()
             'minimize'  ➜ Neutralino.window.minimize()
-            # 'close'     ➜ Neutralino.app.exit()
-            'close'     ➜ Neutralino.window.hide()
+            'close'     ➜ Neutralino.app.exit()
 
 export Window

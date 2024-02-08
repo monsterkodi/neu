@@ -2,26 +2,56 @@
 
 var _k_
 
-var Window
+var getMousePos, getWindowPos, mousePos, setWindowPos, Window, windowPos
 
+import kpos from './pos.js'
 import post from './post.js'
 import Title from './title.js'
+import Drag from './drag.js'
+mousePos = kpos(0,0)
+windowPos = kpos(0,0)
+
+getMousePos = function (cb)
+{
+    return Neutralino.computer.getMousePosition().catch(function (e)
+    {
+        console.error(e)
+    }).then(function (p)
+    {
+        mousePos.copy(p)
+        return (typeof cb === "function" ? cb(mousePos) : undefined)
+    })
+}
+
+getWindowPos = function (cb)
+{
+    return Neutralino.window.getPosition().catch(function (e)
+    {
+        console.error(e)
+    }).then(function (p)
+    {
+        windowPos.copy(p)
+        return (typeof cb === "function" ? cb(windowPos) : undefined)
+    })
+}
+
+setWindowPos = function (p, cb)
+{
+    return Neutralino.window.move(p.x,p.y).catch(function (e)
+    {
+        console.error(e)
+    }).then(cb)
+}
 
 Window = (function ()
 {
     function Window ()
     {
         this["onMenuAction"] = this["onMenuAction"].bind(this)
-        this["onClientConnect"] = this["onClientConnect"].bind(this)
-        this["onAppClientConnect"] = this["onAppClientConnect"].bind(this)
         this["onWindowBlur"] = this["onWindowBlur"].bind(this)
         this["onWindowFocus"] = this["onWindowFocus"].bind(this)
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
         this["onDomLoaded"] = this["onDomLoaded"].bind(this)
-        Neutralino.events.on('clientConnect',this.onClientConnect)
-        Neutralino.events.on('appClientConnect',this.onAppClientConnect)
-        Neutralino.events.on('windowFocus',this.onWindowFocus)
-        Neutralino.events.on('windowBlur',this.onWindowBlur)
         post.on('menuAction',this.onMenuAction)
         window.titlebar = new Title({icon:'./icons/app.png'})
         document.addEventListener('DOMContentLoaded',this.onDomLoaded)
@@ -29,32 +59,29 @@ Window = (function ()
 
     Window.prototype["onDomLoaded"] = function ()
     {
-        var draggable, dragging, posX, posY
+        var lastMousePos, mouseDelta
 
-        dragging = false
-        posX = 0
-        posY = 0
-        draggable = document.getElementById('titlebar')
-        draggable.onmousedown = function (e)
+        lastMousePos = kpos(0,0)
+        mouseDelta = kpos(0,0)
+        return this.drag = new Drag({target:'titlebar',onStart:function ()
         {
-            posX = e.pageX
-            posY = e.pageY
-            dragging = true
-            return null
-        }
-        window.onmouseup = function (e)
-        {
-            dragging = false
-            return null
-        }
-        return document.onmousemove = function (e)
-        {
-            if (dragging)
+            return getMousePos(function (mp)
             {
-                Neutralino.window.move(e.screenX - posX,e.screenY - posY)
-            }
-            return null
-        }
+                return lastMousePos.copy(mp)
+            })
+        },onMove:function ()
+        {
+            return getMousePos(function (mp)
+            {
+                return getWindowPos((function (pos)
+                {
+                    mouseDelta.copy(mp).sub(lastMousePos)
+                    lastMousePos.copy(mp)
+                    mouseDelta.add(pos)
+                    return setWindowPos(mouseDelta)
+                }).bind(this))
+            })
+        }})
     }
 
     Window.prototype["toggleMaximize"] = function ()
@@ -82,16 +109,6 @@ Window = (function ()
         console.log('onBlur',event.detail)
     }
 
-    Window.prototype["onAppClientConnect"] = function (event)
-    {
-        console.log('onAppClientConnect',event.detail)
-    }
-
-    Window.prototype["onClientConnect"] = function (event)
-    {
-        console.log('onClientConnect',event.detail)
-    }
-
     Window.prototype["onMenuAction"] = function (action)
     {
         switch (action.toLowerCase())
@@ -103,7 +120,7 @@ Window = (function ()
                 return Neutralino.window.minimize()
 
             case 'close':
-                return Neutralino.window.hide()
+                return Neutralino.app.exit()
 
         }
 

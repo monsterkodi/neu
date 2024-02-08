@@ -26,6 +26,11 @@ Neutralino.init()
 Neutralino.events.on 'trayMenuItemClicked' onTrayMenuItemClicked
 Neutralino.events.on 'windowClose'         onWindowClose
 
-setTray()
+# setTray()
+
+Neutralino.computer.getDisplays().then (displays) -> 
+    window.displays = displays
+    for d in displays
+        log d.resolution
 
 win = new Window

@@ -91,5 +91,6 @@ elem.downElem = (element, opt) ->
             return found
     
 elem.isElement = isElement
+
 export elem
 
