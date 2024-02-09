@@ -28,18 +28,18 @@
       "title": "neu",
       "width": 800,
       "height": 500,
-      "minWidth": 400,
+      "minWidth": 200,
       "minHeight": 200,
       "center": true,
       "fullScreen": false,
       "alwaysOnTop": false,
       "icon": "/js/icons/app.png",
       "enableInspector": true,
-      "borderless": true,
       "maximize": false,
       "hidden": false,
       "resizable": true,
-      "exitProcessOnClose": false
+      "exitProcessOnClose": false,
+      "borderless": true
     },
     "browser": {
       "globalVariables": {

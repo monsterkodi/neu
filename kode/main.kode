@@ -28,9 +28,9 @@ Neutralino.events.on 'windowClose'         onWindowClose
 
 # setTray()
 
-Neutralino.computer.getDisplays().then (displays) -> 
-    window.displays = displays
-    for d in displays
-        log d.resolution
+# Neutralino.computer.getDisplays().then (displays) -> 
+    # window.displays = displays
+    # for d in displays
+        # log d.resolution
 
 win = new Window

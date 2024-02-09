@@ -1,0 +1,62 @@
+$schema             https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json
+applicationId       net.monsterkodi.neu
+version             1.0.0
+defaultMode         window
+port                0
+documentRoot        /js/
+url                 /
+enableServer        true
+enableNativeAPI     true
+tokenSecurity       one-time
+logging
+                    enabled         true
+                    writeToLogFile  false
+nativeAllowList
+                    os.*
+                    app.*
+                    debug.*
+                    events.*
+                    window.*
+                    storage.*
+                    computer.*
+                    filesystem.*
+modes
+                    window
+                        title               neu
+                        width               800
+                        height              500
+                        minWidth            200
+                        minHeight           200
+                        center              true
+                        fullScreen          false
+                        alwaysOnTop         false
+                        icon                /js/icons/app.png
+                        enableInspector     true
+                        maximize            false
+                        hidden              false
+                        resizable           true
+                        exitProcessOnClose  false
+                        borderless          true
+                    browser
+                        globalVariables
+                            TEST  Test value browser
+                        nativeBlockList
+                            filesystem.*
+                    cloud
+                        url                 /js/#cloud
+                        nativeAllowList
+                            app.*
+                    chrome
+                        width               800
+                        height              500
+                        args                --user-agent="Neutralinojs chrome mode"
+                        nativeBlockList
+                            filesystem.*
+                            os.*
+cli
+                    binaryName      neu
+                    resourcesPath   /js/
+                    extensionsPath  /extensions/
+                    clientLibrary   /js/neutralino.js
+                    binaryVersion   5.0.0
+                    clientVersion   5.0.0

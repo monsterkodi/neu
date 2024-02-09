@@ -2,12 +2,16 @@
 
 var _k_
 
-var getMousePos, getWindowPos, mousePos, setWindowPos, Window, windowPos
+var $, getMousePos, getWindowPos, mousePos, setWindowPos, Window, windowPos
 
+import dom from './dom.js'
+import elem from './elem.js'
 import kpos from './pos.js'
 import post from './post.js'
 import Title from './title.js'
 import Drag from './drag.js'
+$ = dom.$
+
 mousePos = kpos(0,0)
 windowPos = kpos(0,0)
 
@@ -59,11 +63,11 @@ Window = (function ()
 
     Window.prototype["onDomLoaded"] = function ()
     {
-        var lastMousePos, mouseDelta
+        var lastMousePos, main, mouseDelta
 
         lastMousePos = kpos(0,0)
         mouseDelta = kpos(0,0)
-        return this.drag = new Drag({target:'title',onStart:function ()
+        this.drag = new Drag({target:'title',onStart:function ()
         {
             return getMousePos(function (mp)
             {
@@ -81,6 +85,12 @@ Window = (function ()
                     return setWindowPos(mouseDelta)
                 }).bind(this))
             })
+        }})
+        main = $('main')
+        elem({class:'test',text:'hello',parent:main})
+        return elem({text:'window',parent:main,click:function ()
+        {
+            return Neutralino.window.create('/index.html')
         }})
     }
 
