@@ -2,7 +2,7 @@
 
 var _k_ = {isStr: function (o) {return typeof o === 'string' || o instanceof String}}
 
-var CHAR_BACKWARD_SLASH, CHAR_DOT, CHAR_FORWARD_SLASH, isPathSeparator, isPosixPathSeparator, normalizeString, toExport
+var CHAR_BACKWARD_SLASH, CHAR_DOT, CHAR_FORWARD_SLASH, isPathSeparator, isPosixPathSeparator, normalizeString
 
 CHAR_FORWARD_SLASH = '/'.charCodeAt(0)
 CHAR_BACKWARD_SLASH = '\\'.charCodeAt(0)
@@ -109,7 +109,7 @@ normalizeString = function (path, isAbsolute, separator, isPathSeparator)
     }
     return res
 }
-toExport = {sep:'/',normalize:function (path)
+export default {sep:'/',normalize:function (path)
 {
     var isAbsolute, trailingSeparator
 
@@ -137,5 +137,4 @@ toExport = {sep:'/',normalize:function (path)
         path += '/'
     }
     return (isAbsolute ? `/${path}` : path)
-}}
-export default toExport;
+}};

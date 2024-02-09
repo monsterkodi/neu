@@ -63,7 +63,7 @@ Window = (function ()
 
         lastMousePos = kpos(0,0)
         mouseDelta = kpos(0,0)
-        return this.drag = new Drag({target:'titlebar',onStart:function ()
+        return this.drag = new Drag({target:'title',onStart:function ()
         {
             return getMousePos(function (mp)
             {

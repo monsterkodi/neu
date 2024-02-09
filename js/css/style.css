@@ -1,5 +1,5 @@
 body {
-  -webkit-app-region: drag;
+  animation: 300ms ease-in fadeIn;
   font-family: fontMono;
   font-size: 14px;
   position: absolute;
@@ -20,48 +20,11 @@ body {
   right: 0;
   bottom: 0;
 }
-.task {
-  cursor: pointer;
-  white-space: nowrap;
-  animation: highlightTask 0.7s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-.task .time {
-  animation: highlightTime 1s;
-  animation-timing-function: ease-in;
-  animation-iteration-count: 1;
-}
-.task .file {
-  animation: highlightFile 1.3s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: 1;
-}
-#overlay {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
-}
-.fade-in {
-  animation: fadeIn 120s;
-  animation-timing-function: ease-in-out;
-}
-.info {
-  position: absolute;
-  max-height: 300px;
-  height: 70%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
 #titlebar {
   display: flex;
   flex-direction: row;
   height: 30px;
   box-sizing: border-box;
-  font-size: titlebarFontSize;
   font-family: titlebarFont;
   white-space: nowrap;
   cursor: pointer;
@@ -90,13 +53,14 @@ body {
   height: 22px;
 }
 #titlebar .winbutton {
-  flex: 0 0 45px;
+  flex: 0 0 39px;
   display: inline-block;
   text-align: center;
   vertical-align: bottom;
   font-size: 18px;
   padding-top: 2px;
-  pointer-events: all;
+  pointer-events: auto;
+  cursor: grab;
 }
 #titlebar .winbutton.minimize {
   padding-top: 5px;
@@ -130,7 +94,6 @@ body {
   z-index: 9999;
   position: absolute;
   border-radius: 3px;
-  font-size: titlebarFontSize;
   font-family: titlebarFont;
 }
 .popup.titlemenu {
@@ -175,38 +138,6 @@ body {
 }
 ::-webkit-scrollbar-track {
   background-color: transparent;
-}
-@-moz-keyframes highlightTask {
-  0%, 100% {
-    font-size: 14px;
-  }
-  50% {
-    font-size: 12px;
-  }
-}
-@-webkit-keyframes highlightTask {
-  0%, 100% {
-    font-size: 14px;
-  }
-  50% {
-    font-size: 12px;
-  }
-}
-@-o-keyframes highlightTask {
-  0%, 100% {
-    font-size: 14px;
-  }
-  50% {
-    font-size: 12px;
-  }
-}
-@keyframes highlightTask {
-  0%, 100% {
-    font-size: 14px;
-  }
-  50% {
-    font-size: 12px;
-  }
 }
 @-moz-keyframes fadeIn {
   0% {

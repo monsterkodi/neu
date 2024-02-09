@@ -16,7 +16,7 @@ Title = (function ()
 {
     function Title (opt)
     {
-        var imgSrc, pkg, _23_13_, _27_27_
+        var imgSrc, pkg, _20_13_, _24_27_
 
         this.opt = opt
     
@@ -27,11 +27,9 @@ Title = (function ()
         this["menuVisible"] = this["menuVisible"].bind(this)
         this["onMenuAction"] = this["onMenuAction"].bind(this)
         this["onTitlebar"] = this["onTitlebar"].bind(this)
-        this["onDragMove"] = this["onDragMove"].bind(this)
-        this["onDragStart"] = this["onDragStart"].bind(this)
-        this.opt = ((_23_13_=this.opt) != null ? _23_13_ : {})
+        this.opt = ((_20_13_=this.opt) != null ? _20_13_ : {})
         pkg = this.opt.pkg
-        this.elem = $(((_27_27_=this.opt.elem) != null ? _27_27_ : "#titlebar"))
+        this.elem = $(((_24_27_=this.opt.elem) != null ? _24_27_ : "#titlebar"))
         if (!this.elem)
         {
             return
@@ -54,9 +52,8 @@ Title = (function ()
         {
             return post.emit('menuAction','Open Menu')
         })
-        this.title = elem({class:'titlebar-title'})
+        this.title = elem({class:'titlebar-title',id:'title'})
         this.elem.appendChild(this.title)
-        this.initTitleDrag()
         this.setTitle(this.opt)
         this.minimize = elem({class:'winbutton minimize gray'})
         this.minimize.innerHTML = `<svg width="100%" height="100%" viewBox="-10 -8 30 30">
@@ -109,32 +106,12 @@ Title = (function ()
         return this.title.style.display = 'none'
     }
 
-    Title.prototype["initTitleDrag"] = function ()
-    {}
-
-    Title.prototype["onDragStart"] = function (drag, event)
-    {
-        if (event.target.nodeName === 'INPUT')
-        {
-            return 'skip'
-        }
-        return this.startBounds = window.win.getBounds()
-    }
-
-    Title.prototype["onDragMove"] = function (drag, event)
-    {
-        if (this.startBounds)
-        {
-            return window.win.setBounds({x:this.startBounds.x + drag.deltaSum.x,y:this.startBounds.y + drag.deltaSum.y,width:this.startBounds.width,height:this.startBounds.height})
-        }
-    }
-
     Title.prototype["setTitle"] = function (opt)
     {
-        var html, parts, _143_26_
+        var html, parts, _108_26_
 
         html = ""
-        parts = ((_143_26_=opt.title) != null ? _143_26_ : [])
+        parts = ((_108_26_=opt.title) != null ? _108_26_ : [])
         if (opt.pkg)
         {
             if (opt.pkg.name && _k_.in('name',parts))
@@ -199,7 +176,7 @@ Title = (function ()
 
     Title.prototype["menuTemplate"] = function ()
     {
-        var _189_28_
+        var _154_28_
 
         if (!this.opt.dir || !this.opt.menu)
         {
@@ -229,7 +206,7 @@ Title = (function ()
             menuOrAccel = obj[text]
             tmpl.push(((function ()
             {
-                var item, _210_33_, _210_57_
+                var item, _175_33_, _175_57_
 
                 if (_k_.empty(menuOrAccel) && text.startsWith('-'))
                 {
@@ -282,15 +259,15 @@ Title = (function ()
 
     Title.prototype["showMenu"] = function ()
     {
-        var _231_68_, _231_75_
+        var _196_68_, _196_75_
 
         this.menu.elem.style.display = 'inline-block'
-        return ((_231_68_=this.menu) != null ? typeof (_231_75_=_231_68_.focus) === "function" ? _231_75_() : undefined : undefined)
+        return ((_196_68_=this.menu) != null ? typeof (_196_75_=_196_68_.focus) === "function" ? _196_75_() : undefined : undefined)
     }
 
     Title.prototype["hideMenu"] = function ()
     {
-        var _232_25_
+        var _197_25_
 
         ;(this.menu != null ? this.menu.close() : undefined)
         return this.menu.elem.style.display = 'none'
@@ -321,21 +298,6 @@ Title = (function ()
         }
     }
 
-    Title.prototype["initStyle"] = function ()
-    {
-        var href, link, titleStyle
-
-        if (link = $("#style-link"))
-        {
-            href = slash.fileUrl(slash.resolve(slash.join(__dirname,"css/style.css")))
-            titleStyle = elem('link',{href:href,rel:'stylesheet',type:'text/css'})
-            link.parentNode.insertBefore(titleStyle,link)
-            href = slash.fileUrl(slash.resolve(slash.join(__dirname,`css/${prefs.get('scheme','dark')}.css`)))
-            titleStyle = elem('link',{href:href,rel:'stylesheet',type:'text/css',id:'style-title'})
-            return link.parentNode.insertBefore(titleStyle,link)
-        }
-    }
-
     Title.prototype["handleKey"] = function (event)
     {
         var accels, combo, combos, item, kepaths, key, keypath, mainMenu, mod
@@ -344,7 +306,7 @@ Title = (function ()
         key = keyinfo.forEvent(event).key
         combo = keyinfo.forEvent(event).combo
 
-        _k_.dbg(".", 273, 8, null, `mod ${mod} key ${key} combo ${combo}`)
+        _k_.dbg(".", 211, 8, null, `mod ${mod} key ${key} combo ${combo}`)
         mainMenu = this.menuTemplate()
         accels = sds.find.key(mainMenu,'accel')
         combos = sds.find.key(mainMenu,'combo')
@@ -354,9 +316,9 @@ Title = (function ()
             return 'unhandled'
         }
         var list = _k_.list(kepaths)
-        for (var _285_20_ = 0; _285_20_ < list.length; _285_20_++)
+        for (var _223_20_ = 0; _223_20_ < list.length; _223_20_++)
         {
-            keypath = list[_285_20_]
+            keypath = list[_223_20_]
             combos = sds.get(mainMenu,keypath).split(' ')
             combos = combos.map(function (c)
             {

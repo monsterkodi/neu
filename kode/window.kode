@@ -33,7 +33,7 @@ function Window
         mouseDelta   = kpos 0 0
         
         @drag = new Drag 
-            target:'titlebar'
+            target: 'title'
             onStart: -> getMousePos (mp) -> lastMousePos.copy mp
             onMove:  -> 
                 getMousePos (mp) ->

@@ -73,7 +73,7 @@ normalizeString = (path, isAbsolute, separator, isPathSeparator) ->
             dots = -1
     return res
 
-toExport =
+export
     
     sep:'/' 
     
@@ -97,5 +97,3 @@ toExport =
     
         isAbsolute ? "/#{path}" : path
         
-# module.exports = toExport
-export toExport
