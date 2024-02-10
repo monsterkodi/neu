@@ -363,23 +363,27 @@ function Slash
                 
     @fileExists: (p, cb) ->
         
-        if cb is 'function'
-            Slash.exists p, (stat) ->
-                if stat?.isFile() then cb stat
-                else cb()
+        if cb is func
+            try
+                Neutralino.filesystem.getStats(p).then (stat) ->
+                    if stat?.isFile then cb(stat) else cb()
+            catch e
+                error e
+                cb()
         else
-            if stat = Slash.exists p
-                return stat if stat.isFile()
+            error 'slash.fileExists without callback'
                 
     @dirExists: (p, cb) ->
 
-        if cb is 'function'
-            Slash.exists p, (stat) ->
-                if stat?.isDirectory() then cb stat
-                else cb()
+        if cb is func
+            try
+                Neutralino.filesystem.getStats(p).then (stat) ->
+                    if stat?.isDirectory then cb(stat) else cb()
+            catch e
+                error e
+                cb()
         else
-            if stat = Slash.exists p
-                return stat if stat.isDirectory()
+            error 'slash.fileExists without callback'
             
     # 000000000   0000000   000   000   0000000  000   000  
     #    000     000   000  000   000  000       000   000  
@@ -481,12 +485,6 @@ function Slash
         '.gitignore':1
         '.npmignore':1
     
-    # 000000000  00000000  000   000  000000000  
-    #    000     000        000 000      000     
-    #    000     0000000     00000       000     
-    #    000     000        000 000      000     
-    #    000     00000000  000   000     000     
-    
     @isText: (p) ->
     
         try
@@ -509,49 +507,30 @@ function Slash
         
     @readText: (p, cb) ->
         
-        if cb is 'function'
+        if cb is func
             try
-                fs.readFile p, 'utf8', (err, text) -> 
-                    cb not err and text or ''
+                log 'slash.readText' p
+                Neutralino.filesystem.readFile(p).catch((e)->error e).then (text) -> cb text
             catch err
-                Slash.error "Slash.readText -- " + String(err)
+                error "Slash.readText -- " + String(err)
                 cb ''
         else
-            try
-                return fs.readFileSync p, 'utf8'
-            catch err
-                Slash.error "Slash.readText -- " + String(err)
+            error "Slash.readText -- no callback!"
             ''
 
     @writeText: (p, text, cb) ->
         
         tmpfile = Slash.tmpfile()
         
-        if cb is 'function'
+        if cb is func
             try
-                @fileExists p, (stat) ->  
-                    
-                    mode = stat?.mode ? 0o666
-    
-                    fs.writeFile tmpfile, text, mode:mode, (err) ->
-                        if err 
-                            Slash.error "Slash.writeText - " + String(err)
-                            cb ''
-                        else
-                            fs.move tmpfile, p, overwrite:true, (err) ->
-                                if err 
-                                    Slash.error "Slash.writeText -- move #{tmpfile} -> #{p} ERROR:" + String(err)
-                                    cb '' 
-                                else cb p
-            catch err
-                cb Slash.error "Slash.writeText --- " + String(err)
+                Neutralino.filesystem.writeFile(tmpfile, text).then ->
+                    cb p
+            catch err 
+                Slash.error "Slash.writeText - " + String(err)
+                cb ''
         else
-            try
-                fs.writeFileSync tmpfile, text
-                fs.moveSync tmpfile, p, overwrite:true
-                return p
-            catch err
-                Slash.error "Slash.writeText -- " + String(err)
+            Slash.error "Slash.writeText -- no callback!"
             ''
         
     # 000   000   0000000   000000000   0000000  000   000  

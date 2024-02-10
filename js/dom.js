@@ -3,7 +3,7 @@
 var _k_ = {isStr: function (o) {return typeof o === 'string' || o instanceof String}, in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}}
 
 import elem from './elem.js'
-export default {$:function (idOrQueryOrElement, queryOrElement = document)
+export default {elem:elem,$:function (idOrQueryOrElement, queryOrElement = document)
 {
     if (_k_.isStr(idOrQueryOrElement))
     {
@@ -46,9 +46,9 @@ export default {$:function (idOrQueryOrElement, queryOrElement = document)
     var rule
 
     var list = _k_.list(document.styleSheets[ssid].cssRules)
-    for (var _43_17_ = 0; _43_17_ < list.length; _43_17_++)
+    for (var _45_17_ = 0; _45_17_ < list.length; _45_17_++)
     {
-        rule = list[_43_17_]
+        rule = list[_45_17_]
         if (rule.selectorText === selector)
         {
             rule.style[key] = value
@@ -62,9 +62,9 @@ export default {$:function (idOrQueryOrElement, queryOrElement = document)
     var rule
 
     var list = _k_.list(document.styleSheets[ssid].cssRules)
-    for (var _51_17_ = 0; _51_17_ < list.length; _51_17_++)
+    for (var _53_17_ = 0; _53_17_ < list.length; _53_17_++)
     {
-        rule = list[_51_17_]
+        rule = list[_53_17_]
         if (rule.selectorText === selector)
         {
             if ((rule.style[key] != null ? rule.style[key].length : undefined))

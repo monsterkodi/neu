@@ -7,11 +7,12 @@
 ###
 
 import dom   from './dom.js'    # use dom
-import elem  from './elem.js'   
+import menu  from './menu.js'   
+import noon  from './noon.js'  
 import slash from './slash.js'  
 import post  from './post.js'   # use dom elem slash post 
                                 
-{ $, stopEvent } = dom          # use $ stopEvent from dom
+{ $, stopEvent, elem } = dom    # use $ stopEvent from dom
 
 function Title
     
@@ -85,8 +86,8 @@ function Title
         @elem.appendChild @topframe
         
         if @opt.menu
-            
-            @initMenu @menuTemplate()
+            log 'opt.menu' @opt.menu
+            @initMenu()
        
     pushElem: (elem) ->
         
@@ -144,18 +145,38 @@ function Title
             'show menu'   ➜ @showMenu()
             'hide menu'   ➜ @hideMenu()
 
-    menuTemplate: ->
-        
-        return [] if not @opt.dir or not @opt.menu
-        
+    # 000  000   000  000  000000000  00     00  00000000  000   000  000   000  
+    # 000  0000  000  000     000     000   000  000       0000  000  000   000  
+    # 000  000 0 000  000     000     000000000  0000000   000 0 000  000   000  
+    # 000  000  0000  000     000     000 0 000  000       000  0000  000   000  
+    # 000  000   000  000     000     000   000  00000000  000   000   0000000   
+    
+    initMenu: ->
+                    
+        return [] if not @opt.menu
+                
         if empty @templateCache
-            @templateCache = @makeTemplate noon.load slash.resolve slash.join @opt.dir, @opt.menu
-            
-        if @opt.menuTemplate? and @opt.menuTemplate is 'function'
-            @opt.menuTemplate @templateCache
+            log 'load' @opt.menu
+            noon.load @opt.menu, (tc) => 
+                log 'loaded'
+                if valid tc
+                    log 'tc' tc
+                    @templateCache = @makeTemplate tc
+                    if @opt.menuTemplate? and @opt.menuTemplate is func
+                        @templateCache = @opt.menuTemplate @templateCache
+                    @initFromCache()
+                else
+                    error 'title.initMenu - empty template?' @opt.menu
         else
-            @templateCache
+            @initFromCache()
+            
+    initFromCache: ->
         
+        log 'templateCache' @templateCache
+        @menu = new menu items:@templateCache
+        @elem.insertBefore @menu.elem, @elem.firstChild.nextSibling
+        @hideMenu()
+                
     makeTemplate: (obj) ->
         
         tmpl = []
@@ -180,17 +201,11 @@ function Title
                     text:text
                     menu:@makeTemplate menuOrAccel
         tmpl
-
-    initMenu: (items) ->
-
-        @menu = new menu items:items
-        @elem.insertBefore @menu.elem, @elem.firstChild.nextSibling
-        @hideMenu()
         
     refreshMenu: ->
         
         @menu.del()
-        @initMenu @menuTemplate()
+        @initMenu()
 
     menuVisible: => @menu.elem.style.display != 'none'
     showMenu:    => @menu.elem.style.display = 'inline-block'; @menu?.focus?()

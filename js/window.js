@@ -57,7 +57,7 @@ Window = (function ()
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
         this["onDomLoaded"] = this["onDomLoaded"].bind(this)
         post.on('menuAction',this.onMenuAction)
-        window.titlebar = new Title({icon:'./icons/app.png'})
+        window.titlebar = new Title({icon:'./icons/app.png',menu:'./menu.noon'})
         document.addEventListener('DOMContentLoaded',this.onDomLoaded)
     }
 
@@ -87,11 +87,14 @@ Window = (function ()
             })
         }})
         main = $('main')
-        elem({class:'test',text:'hello',parent:main})
-        return elem({text:'window',parent:main,click:function ()
+        elem({class:'test',text:'window',parent:main,click:function ()
         {
             return Neutralino.window.create('/index.html')
         }})
+        return window.addEventListener('keypress',function ()
+        {
+            console.log('keypress')
+        })
     }
 
     Window.prototype["toggleMaximize"] = function ()

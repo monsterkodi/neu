@@ -7,23 +7,20 @@
 */
 body {
   overflow: hidden;
-  background-color: #000;
   color: #fff;
-  border-radius: 0px;
-  border: 1px solid #222;
 }
 #main {
   border-left: 6px solid #111;
   border-right: 6px solid #111;
   border-bottom: 6px solid #111;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  background: #000;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background-color: #000;
 }
 #titlebar {
   background: #111;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 .titlebar-name {
   color: #999;

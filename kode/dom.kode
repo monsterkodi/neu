@@ -9,6 +9,8 @@
 import elem from './elem.js'
 
 export
+
+    elem: elem
     
     $: (idOrQueryOrElement, queryOrElement=document) ->
         if idOrQueryOrElement is str

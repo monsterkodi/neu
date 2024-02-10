@@ -27,11 +27,11 @@ function Window
         
         post.on 'menuAction' @onMenuAction
         
-        window.titlebar = new Title icon:'./icons/app.png'
+        window.titlebar = new Title icon:'./icons/app.png' menu:'./menu.noon'
         
         document.addEventListener 'DOMContentLoaded' @onDomLoaded
             
-    onDomLoaded: => 
+    onDomLoaded: =>
         
         lastMousePos = kpos 0 0
         mouseDelta   = kpos 0 0
@@ -47,10 +47,11 @@ function Window
                         mouseDelta.add pos
                         setWindowPos mouseDelta
                         
-        main =$ 'main' 
-        elem class:'test' text:'hello' parent:main
-        elem text: 'window' parent:main, click: -> 
+        main =$ 'main'
+        elem class:'test' text: 'window' parent:main, click: -> 
             Neutralino.window.create '/index.html'
+            
+        window.addEventListener 'keypress' -> log 'keypress'
             
     toggleMaximize: =>
         
@@ -67,8 +68,8 @@ function Window
         
         switch action.toLowerCase()
              
-            'maximize'  ➜ @toggleMaximize()
-            'minimize'  ➜ Neutralino.window.minimize()
-            'close'     ➜ Neutralino.app.exit()
+            'maximize' ➜ @toggleMaximize()
+            'minimize' ➜ Neutralino.window.minimize()
+            'close'    ➜ Neutralino.app.exit()
 
 export Window

@@ -1,6 +1,6 @@
 name          neu
 description   neutralino app
-version       0.1.0
+version       0.1.1
 keywords
               neutralino
               app
@@ -12,4 +12,3 @@ scripts
               build  ./node_modules/.bin/kode -Ho js kode/*.kode
 dependencies
               kode  github:monsterkodi/kode
-              kxk   github:monsterkodi/kxk

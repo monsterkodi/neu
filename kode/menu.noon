@@ -1,0 +1,34 @@
+# 00     00  00000000  000   000  000   000
+# 000   000  000       0000  000  000   000
+# 000000000  0000000   000 0 000  000   000
+# 000 0 000  000       000  0000  000   000
+# 000   000  00000000  000   000   0000000
+
+neukonra
+    About                   alt+cmdctrl+/
+    -
+    Set Dir...              cmdctrl+o o
+    Clear                   cmdctrl+k k
+    --
+    Quit                    cmdctrl+q q
+
+# 000   000  000  000   000  0000000     0000000   000   000
+# 000 0 000  000  0000  000  000   000  000   000  000 0 000
+# 000000000  000  000 0 000  000   000  000   000  000000000
+# 000   000  000  000  0000  000   000  000   000  000   000
+# 00     00  000  000   000  0000000     0000000   00     00
+
+Window
+    Close                   cmdctrl+w w
+    -
+    Toggle Menu             alt+m m
+    Toggle Scheme           alt+i ctrl+i
+    --
+    Minimize                alt+ctrl+shift+m
+    Maximize                alt+ctrl+m
+    Hide                    command+h h
+    ---
+    Screenshot              f3
+    Reload                  alt+cmdctrl+l
+    DevTools                alt+cmdctrl+i
+    

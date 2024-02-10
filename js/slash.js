@@ -1,6 +1,6 @@
 // monsterkodi/kode 0.249.0
 
-var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}}
+var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, isFunc: function (o) {return typeof o === 'function'}, list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}}
 
 var Slash
 
@@ -591,61 +591,61 @@ Slash = (function ()
 
     Slash["fileExists"] = function (p, cb)
     {
-        var stat
-
-        if (typeof(cb) === 'function')
+        if (_k_.isFunc(cb))
         {
-            return Slash.exists(p,function (stat)
+            try
             {
-                if ((stat != null ? stat.isFile() : undefined))
+                return Neutralino.filesystem.getStats(p).then(function (stat)
                 {
-                    return cb(stat)
-                }
-                else
-                {
-                    return cb()
-                }
-            })
+                    if ((stat != null ? stat.isFile : undefined))
+                    {
+                        return cb(stat)
+                    }
+                    else
+                    {
+                        return cb()
+                    }
+                })
+            }
+            catch (e)
+            {
+                console.error(e)
+                return cb()
+            }
         }
         else
         {
-            if (stat = Slash.exists(p))
-            {
-                if (stat.isFile())
-                {
-                    return stat
-                }
-            }
+            console.error('slash.fileExists without callback')
         }
     }
 
     Slash["dirExists"] = function (p, cb)
     {
-        var stat
-
-        if (typeof(cb) === 'function')
+        if (_k_.isFunc(cb))
         {
-            return Slash.exists(p,function (stat)
+            try
             {
-                if ((stat != null ? stat.isDirectory() : undefined))
+                return Neutralino.filesystem.getStats(p).then(function (stat)
                 {
-                    return cb(stat)
-                }
-                else
-                {
-                    return cb()
-                }
-            })
+                    if ((stat != null ? stat.isDirectory : undefined))
+                    {
+                        return cb(stat)
+                    }
+                    else
+                    {
+                        return cb()
+                    }
+                })
+            }
+            catch (e)
+            {
+                console.error(e)
+                return cb()
+            }
         }
         else
         {
-            if (stat = Slash.exists(p))
-            {
-                if (stat.isDirectory())
-                {
-                    return stat
-                }
-            }
+            console.error('slash.fileExists without callback')
         }
     }
 
@@ -795,9 +795,9 @@ Slash = (function ()
             {
                 Slash.textext = {}
                 var list = _k_.list(require('textextensions'))
-                for (var _495_24_ = 0; _495_24_ < list.length; _495_24_++)
+                for (var _493_24_ = 0; _493_24_ < list.length; _493_24_++)
                 {
-                    ext = list[_495_24_]
+                    ext = list[_493_24_]
                     Slash.textext[ext] = true
                 }
                 Slash.textext['crypt'] = true
@@ -828,31 +828,28 @@ Slash = (function ()
 
     Slash["readText"] = function (p, cb)
     {
-        if (typeof(cb) === 'function')
+        if (_k_.isFunc(cb))
         {
             try
             {
-                return fs.readFile(p,'utf8',function (err, text)
+                console.log('slash.readText',p)
+                return Neutralino.filesystem.readFile(p).catch(function (e)
                 {
-                    return cb(!err && text || '')
+                    console.error(e)
+                }).then(function (text)
+                {
+                    return cb(text)
                 })
             }
             catch (err)
             {
-                Slash.error("Slash.readText -- " + String(err))
+                console.error("Slash.readText -- " + String(err))
                 return cb('')
             }
         }
         else
         {
-            try
-            {
-                return fs.readFileSync(p,'utf8')
-            }
-            catch (err)
-            {
-                Slash.error("Slash.readText -- " + String(err))
-            }
+            console.error("Slash.readText -- no callback!")
             return ''
         }
     }
@@ -862,57 +859,24 @@ Slash = (function ()
         var tmpfile
 
         tmpfile = Slash.tmpfile()
-        if (typeof(cb) === 'function')
+        if (_k_.isFunc(cb))
         {
             try
             {
-                return this.fileExists(p,function (stat)
+                return Neutralino.filesystem.writeFile(tmpfile,text).then(function ()
                 {
-                    var mode, _534_38_
-
-                    mode = ((_534_38_=(stat != null ? stat.mode : undefined)) != null ? _534_38_ : 0o666)
-                    return fs.writeFile(tmpfile,text,{mode:mode},function (err)
-                    {
-                        if (err)
-                        {
-                            Slash.error("Slash.writeText - " + String(err))
-                            return cb('')
-                        }
-                        else
-                        {
-                            return fs.move(tmpfile,p,{overwrite:true},function (err)
-                            {
-                                if (err)
-                                {
-                                    Slash.error(`Slash.writeText -- move ${tmpfile} -> ${p} ERROR:` + String(err))
-                                    return cb('')
-                                }
-                                else
-                                {
-                                    return cb(p)
-                                }
-                            })
-                        }
-                    })
+                    return cb(p)
                 })
             }
             catch (err)
             {
-                return cb(Slash.error("Slash.writeText --- " + String(err)))
+                Slash.error("Slash.writeText - " + String(err))
+                return cb('')
             }
         }
         else
         {
-            try
-            {
-                fs.writeFileSync(tmpfile,text)
-                fs.moveSync(tmpfile,p,{overwrite:true})
-                return p
-            }
-            catch (err)
-            {
-                Slash.error("Slash.writeText -- " + String(err))
-            }
+            Slash.error("Slash.writeText -- no callback!")
             return ''
         }
     }
