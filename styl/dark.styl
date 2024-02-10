@@ -18,14 +18,15 @@ textBlurColor       = #444
 textActiveColor     = #999
 textFocusColor      = #fff
 
-winbuttonActiveColor = textFocusColor
-winbuttonHoverColor  = textActiveColor
+// winbuttonBlurColor   = titleColor
+winbuttonBlurColor   = #000000
 winbuttonFocusColor  = textBlurColor
-winbuttonBlurColor   = titleColor
+winbuttonHoverColor  = textActiveColor
+winbuttonActiveColor = textFocusColor
 
 frameWidth          = 6px
-frameRadius         = 12px
-borderRadius        = 8px
+frameRadius         = 10px
+borderRadius        = 10px
 frameBorder         = frameWidth solid frameColor
 bodyBorder          = 1px solid #222
 
@@ -38,6 +39,8 @@ bodyBorder          = 1px solid #222
 body
     overflow            hidden
     color               textFocusColor
+    border              bodyBorder
+    border-radius       borderRadius
 
 // 00     00   0000000   000  000   000  
 // 000   000  000   000  000  0000  000  
@@ -63,6 +66,7 @@ body
     background                  frameColor
     border-top-left-radius      frameRadius
     border-top-right-radius     frameRadius
+    overflow hidden
 
 .titlebar-name
     color               textActiveColor
@@ -75,23 +79,28 @@ body
         background-color titleRedColor
         &.gray
             background-color titleColor
-
+            
 #titlebar .winbutton.gray
     color               winbuttonBlurColor
 #titlebar .winbutton svg
-    stroke-width        1px
-    stroke              textBlurColor   
-    
-#titlebar .winbutton.gray:active
-    color               winbuttonActiveColor
-#titlebar .winbutton:active svg    
-    stroke              textFocusColor
+    stroke-width        2px
+    stroke              winbuttonBlurColor
+
+#titlebar:hover .winbutton.gray            
+    color               winbuttonFocusColor
+#titlebar:hover .winbutton svg
+    stroke              winbuttonFocusColor
     
 #titlebar .winbutton.gray:hover    
     color               winbuttonHoverColor
 #titlebar .winbutton:hover svg    
-    stroke              textFocusColor
+    stroke              winbuttonHoverColor
         
+#titlebar .winbutton.gray:active
+    color               winbuttonActiveColor
+#titlebar .winbutton:active svg    
+    stroke              winbuttonActiveColor
+
 // 00     00  00000000  000   000  000   000  
 // 000   000  000       0000  000  000   000  
 // 000000000  0000000   000 0 000  000   000  

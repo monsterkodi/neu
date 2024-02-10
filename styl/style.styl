@@ -7,13 +7,15 @@
 
 frameWidth          = 6px
 titlebarHeight      = 30px
+fontMono            = "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial
 
 .test
-    font-size           40px
-    font-family         fontMono
+    font-size       40px
+    font-family     fontMono
     color           blue
 .test:hover
-    color           red
+    color           white
+    cursor          pointer
 
 // 0000000     0000000   0000000    000   000
 // 000   000  000   000  000   000   000 000 
@@ -66,6 +68,7 @@ body
     cursor              pointer
 
 .titlebar-title
+    cursor              grab
     display             inline-block
     flex-direction      row
     flex                1 1 0px
@@ -96,7 +99,7 @@ body
     font-size           18px
     padding-top         2px
     // pointer-events      auto
-    cursor              grab
+    cursor              pointer
     &.minimize
         padding-top     5px
 

@@ -8,19 +8,22 @@
 body {
   overflow: hidden;
   color: #fff;
+  border: 1px solid #222;
+  border-radius: 10px;
 }
 #main {
   border-left: 6px solid #111;
   border-right: 6px solid #111;
   border-bottom: 6px solid #111;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   background-color: #000;
 }
 #titlebar {
   background: #111;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
 }
 .titlebar-name {
   color: #999;
@@ -35,22 +38,28 @@ body {
   background-color: #222;
 }
 #titlebar .winbutton.gray {
-  color: #222;
+  color: #000;
 }
 #titlebar .winbutton svg {
-  stroke-width: 1px;
+  stroke-width: 2px;
+  stroke: #000;
+}
+#titlebar:hover .winbutton.gray {
+  color: #444;
+}
+#titlebar:hover .winbutton svg {
   stroke: #444;
-}
-#titlebar .winbutton.gray:active {
-  color: #fff;
-}
-#titlebar .winbutton:active svg {
-  stroke: #fff;
 }
 #titlebar .winbutton.gray:hover {
   color: #999;
 }
 #titlebar .winbutton:hover svg {
+  stroke: #999;
+}
+#titlebar .winbutton.gray:active {
+  color: #fff;
+}
+#titlebar .winbutton:active svg {
   stroke: #fff;
 }
 .menuItem {

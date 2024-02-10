@@ -22,21 +22,17 @@ nativeAllowList
                     filesystem.*
 modes
                     window
+                        icon                /js/icons/app.png
                         title               neu
                         width               800
                         height              500
-                        minWidth            200
-                        minHeight           200
+                        minWidth            100
+                        minHeight           100
                         center              true
-                        fullScreen          false
-                        alwaysOnTop         false
-                        icon                /js/icons/app.png
-                        enableInspector     true
-                        maximize            false
-                        hidden              false
                         resizable           true
-                        exitProcessOnClose  false
                         borderless          true
+                        enableInspector     true
+                        exitProcessOnClose  true
                     browser
                         globalVariables
                             TEST  Test value browser

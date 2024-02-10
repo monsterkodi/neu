@@ -1,14 +1,15 @@
 .test {
   font-size: 40px;
-  font-family: fontMono;
+  font-family: "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial;
   color: #00f;
 }
 .test:hover {
-  color: #f00;
+  color: #fff;
+  cursor: pointer;
 }
 body {
   animation: 300ms ease-in fadeIn;
-  font-family: fontMono;
+  font-family: "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial;
   font-size: 14px;
   position: absolute;
   top: 0;
@@ -39,6 +40,7 @@ body {
   cursor: pointer;
 }
 .titlebar-title {
+  cursor: grab;
   display: inline-block;
   flex-direction: row;
   flex: 1 1 0px;
@@ -67,7 +69,7 @@ body {
   vertical-align: bottom;
   font-size: 18px;
   padding-top: 2px;
-  cursor: grab;
+  cursor: pointer;
 }
 #titlebar .winbutton.minimize {
   padding-top: 5px;
