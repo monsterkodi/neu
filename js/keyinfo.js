@@ -2,6 +2,7 @@
 
 var _k_ = {list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}, in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}}
 
+import os from './os.js'
 class Keyinfo
 {
     static forEvent (event)
@@ -28,9 +29,9 @@ class Keyinfo
         mods = []
         char = null
         var list = _k_.list(combo.split('+'))
-        for (var _31_14_ = 0; _31_14_ < list.length; _31_14_++)
+        for (var _34_14_ = 0; _34_14_ < list.length; _34_14_++)
         {
-            c = list[_31_14_]
+            c = list[_34_14_]
             if (this.isModifier(c))
             {
                 mods.push(c)
@@ -106,7 +107,7 @@ class Keyinfo
         index = combo.indexOf('cmdctrl')
         if (index >= 0)
         {
-            if (os.platform() === 'darwin')
+            if (os.isMac)
             {
                 combo = combo.replace('cmdctrl','command')
                 combo = combo.replace('alt+command','command+alt')
@@ -121,7 +122,7 @@ class Keyinfo
 
     static keynameForEvent (event)
     {
-        var _105_45_, _96_33_
+        var _108_45_, _99_33_
 
         switch (event.code)
         {
@@ -219,7 +220,7 @@ class Keyinfo
 
     static characterForEvent (event)
     {
-        var _110_20_
+        var _113_20_
 
         if ((event.key != null ? event.key.length : undefined) === 1)
         {
@@ -236,7 +237,7 @@ class Keyinfo
         var i
 
         combo = this.convertCmdCtrl(combo.toLowerCase())
-        for (var _118_18_ = i = 0, _118_22_ = this.iconKeyNames.length; (_118_18_ <= _118_22_ ? i < this.iconKeyNames.length : i > this.iconKeyNames.length); (_118_18_ <= _118_22_ ? ++i : --i))
+        for (var _121_18_ = i = 0, _121_22_ = this.iconKeyNames.length; (_121_18_ <= _121_22_ ? i < this.iconKeyNames.length : i > this.iconKeyNames.length); (_121_18_ <= _121_22_ ? ++i : --i))
         {
             combo = combo.replace(new RegExp(this.iconKeyNames[i],'gi'),this.iconKeyChars[i])
         }

@@ -6,15 +6,11 @@
 0000000   0000000  000   000  0000000   000   000    
 ###
 
-# os   = require 'os'
-# fs   = require 'fs-extra'
-# path = require 'path'
-# path = require './path'
 import path from './path.js'
 
 function Slash
     
-    @logErrors: false
+    @logErrors: true
 
     # 00000000    0000000   000000000  000   000  
     # 000   000  000   000     000     000   000  
@@ -505,18 +501,17 @@ function Slash
             Slash.error "Slash.isText -- " + String(err)
             false
         
-    @readText: (p, cb) ->
+    @fetchText: (p, cb) ->
         
-        if cb is func
-            try
-                log 'slash.readText' p
-                Neutralino.filesystem.readFile(p).catch((e)->error e).then (text) -> cb text
-            catch err
-                error "Slash.readText -- " + String(err)
-                cb ''
-        else
-            error "Slash.readText -- no callback!"
-            ''
+        if not cb is func
+            error "Slash.fetchText -- no callback!"
+            return
+            
+        fetch(p).then (response) ->
+            if response.ok 
+                response.text().then (text) -> cb text
+            else
+                error 'ERROR:' response
 
     @writeText: (p, text, cb) ->
         

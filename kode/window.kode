@@ -13,7 +13,7 @@ import post  from './post.js'
 import Title from './title.js'
 import Drag  from './drag.js'
 
-{ $ } = dom
+{ $, stopEvent } = dom
 
 mousePos  = kpos 0 0
 windowPos = kpos 0 0
@@ -27,7 +27,7 @@ function Window
         
         post.on 'menuAction' @onMenuAction
         
-        window.titlebar = new Title icon:'./icons/app.png' menu:'./menu.noon'
+        window.titlebar = new Title icon:'./icons/app.png' menu:'/menu.noon'
         
         document.addEventListener 'DOMContentLoaded' @onDomLoaded
             
@@ -48,10 +48,14 @@ function Window
                         setWindowPos mouseDelta
                         
         main =$ 'main'
-        elem class:'test' text: 'window' parent:main, click: -> 
+        elem class:'test' text:'window' parent:main, click: -> 
             Neutralino.window.create '/index.html'
             
-        window.addEventListener 'keypress' -> log 'keypress'
+        window.addEventListener 'keydown' -> log 'window keydown' event; stopEvent event
+        
+        # content =$ 'content'
+        # content.addEventListener 'keydown' (event) -> log 'content keydown' event; stopEvent event
+        # content.focus()
             
     toggleMaximize: =>
         

@@ -24,7 +24,7 @@ Menu = (function ()
         this["onHover"] = this["onHover"].bind(this)
         this["blur"] = this["blur"].bind(this)
         this["focus"] = this["focus"].bind(this)
-        this.elem = elem({class:'menu',tabindex:3})
+        this.elem = elem({class:'menu',tabindex:0})
         var list = _k_.list(opt.items)
         for (var _21_17_ = 0; _21_17_ < list.length; _21_17_++)
         {

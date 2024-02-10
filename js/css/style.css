@@ -1,6 +1,22 @@
+@font-face {
+  font-family: titlebarFont;
+  font-weight: normal;
+  font-style: normal;
+  src: url("/Bahnschrift.woff");
+}
+@font-face {
+  font-family: fontMono;
+  font-weight: normal;
+  font-style: normal;
+  src: url("/Meslo.woff");
+}
+* {
+  outline-width: 0;
+  outline-style: none;
+}
 .test {
-  font-size: 40px;
-  font-family: "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial;
+  font-size: 140px;
+  font-family: fontMono;
   color: #00f;
 }
 .test:hover {
@@ -9,13 +25,13 @@
 }
 body {
   animation: 300ms ease-in fadeIn;
-  font-family: "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial;
+  font-family: fontMono;
   font-size: 14px;
   position: absolute;
-  top: 0;
   bottom: 0;
-  left: 0;
   right: 0;
+  left: 0;
+  top: 0;
   margin: 0;
   padding: 0;
 }
@@ -23,11 +39,21 @@ body {
   padding: 6px;
   overflow: auto;
   -webkit-user-select: text;
+  pointer-events: auto;
   position: absolute;
   top: 30px;
   left: 0;
   right: 0;
   bottom: 0;
+}
+#content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
 }
 #titlebar {
   -webkit-user-select: none;

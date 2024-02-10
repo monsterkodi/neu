@@ -16,7 +16,7 @@ function Menu
     
     @: (opt) ->
         
-        @elem = elem class:'menu' tabindex:3
+        @elem = elem class:'menu' tabindex:0
         
         for item in opt.items
             continue if item.hide

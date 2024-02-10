@@ -4,7 +4,8 @@ var _k_ = {list: function (l) {return l != null ? typeof l.length === 'number' ?
 
 var elem, Popup, stopEvent
 
-import dom from './elem.js'
+import os from './os.js'
+import dom from './dom.js'
 import post from './post.js'
 import slash from './slash.js'
 import keyinfo from './keyinfo.js'
@@ -17,7 +18,7 @@ Popup = (function ()
 {
     function Popup (opt)
     {
-        var br, child, div, item, text, _46_30_, _47_109_, _47_81_
+        var br, child, div, item, text, _47_30_, _48_64_, _48_92_
 
         this["onKeyDown"] = this["onKeyDown"].bind(this)
         this["onFocusOut"] = this["onFocusOut"].bind(this)
@@ -27,7 +28,7 @@ Popup = (function ()
         this["activate"] = this["activate"].bind(this)
         this["close"] = this["close"].bind(this)
         this.focusElem = document.activeElement
-        this.items = elem({class:'popup',tabindex:3})
+        this.items = elem({class:'popup',tabindex:0})
         this.parent = opt.parent
         this.onClose = opt.onClose
         if (opt.class)
@@ -35,9 +36,9 @@ Popup = (function ()
             this.items.classList.add(opt.class)
         }
         var list = _k_.list(opt.items)
-        for (var _28_17_ = 0; _28_17_ < list.length; _28_17_++)
+        for (var _29_17_ = 0; _29_17_ < list.length; _29_17_++)
         {
-            item = list[_28_17_]
+            item = list[_29_17_]
             if (item.hide)
             {
                 continue
@@ -66,18 +67,18 @@ Popup = (function ()
                     if (item.children)
                     {
                         var list1 = _k_.list(item.children)
-                        for (var _42_34_ = 0; _42_34_ < list1.length; _42_34_++)
+                        for (var _43_34_ = 0; _43_34_ < list1.length; _43_34_++)
                         {
-                            child = list1[_42_34_]
+                            child = list1[_43_34_]
                             div.appendChild(child)
                         }
                     }
                 }
                 div.item = item
                 div.addEventListener('click',this.onClick)
-                if (((_46_30_=item.combo) != null ? _46_30_ : item.accel))
+                if (((_47_30_=item.combo) != null ? _47_30_ : item.accel))
                 {
-                    text = keyinfo.short((os.platform() === 'darwin' ? (((_47_81_=item.combo) != null ? _47_81_ : item.accel)) : (((_47_109_=item.accel) != null ? _47_109_ : item.combo))))
+                    text = keyinfo.short((os.isMac ? (((_48_64_=item.combo) != null ? _48_64_ : item.accel)) : (((_48_92_=item.accel) != null ? _48_92_ : item.combo))))
                     div.appendChild(elem('span',{class:'popupCombo',text:text}))
                 }
                 else if (item.menu)
@@ -118,9 +119,9 @@ Popup = (function ()
 
     Popup.prototype["close"] = function (opt = {})
     {
-        var _101_22_, _105_22_, _84_42_, _84_48_, _85_33_, _89_14_, _92_14_, _93_14_, _94_14_, _95_14_, _98_15_
+        var _102_22_, _106_22_, _85_42_, _85_48_, _86_33_, _90_14_, _93_14_, _94_14_, _95_14_, _96_14_, _99_15_
 
-        if (_k_.empty((this.parent)) || ((_84_42_=this.parentMenu()) != null ? (_84_48_=_84_42_.elem) != null ? _84_48_.classList.contains('menu') : undefined : undefined))
+        if (_k_.empty((this.parent)) || ((_85_42_=this.parentMenu()) != null ? (_85_48_=_85_42_.elem) != null ? _85_48_.classList.contains('menu') : undefined : undefined))
         {
             if ('skip' === (typeof this.onClose === "function" ? this.onClose() : undefined))
             {
@@ -163,7 +164,7 @@ Popup = (function ()
 
     Popup.prototype["select"] = function (item, opt = {})
     {
-        var _124_17_, _127_17_, _131_20_
+        var _125_17_, _128_17_, _132_20_
 
         if (!(item != null))
         {
@@ -204,7 +205,7 @@ Popup = (function ()
 
     Popup.prototype["closePopup"] = function ()
     {
-        var _154_14_
+        var _155_14_
 
         ;(this.popup != null ? this.popup.close({focus:false}) : undefined)
         return delete this.popup
@@ -230,7 +231,7 @@ Popup = (function ()
 
     Popup.prototype["activateOrNavigateRight"] = function ()
     {
-        var _174_20_
+        var _175_20_
 
         if ((this.selected != null))
         {
@@ -247,7 +248,7 @@ Popup = (function ()
 
     Popup.prototype["navigateRight"] = function ()
     {
-        var _183_25_, _186_25_
+        var _184_25_, _187_25_
 
         if (this.popup)
         {
@@ -265,7 +266,7 @@ Popup = (function ()
 
     Popup.prototype["parentMenu"] = function ()
     {
-        var _189_18_
+        var _190_18_
 
         if ((this.parent != null) && !this.parent.parent)
         {
@@ -275,7 +276,7 @@ Popup = (function ()
 
     Popup.prototype["nextItem"] = function ()
     {
-        var next, _201_38_
+        var next, _202_38_
 
         if (next = this.selected)
         {
@@ -291,7 +292,7 @@ Popup = (function ()
 
     Popup.prototype["prevItem"] = function ()
     {
-        var prev, _207_38_
+        var prev, _208_38_
 
         if (prev = this.selected)
         {
@@ -307,17 +308,17 @@ Popup = (function ()
 
     Popup.prototype["activate"] = function (item)
     {
-        var _218_20_, _218_24_, _220_39_, _223_52_
+        var _219_20_, _219_24_, _221_39_, _224_52_
 
         if (((item.item != null ? item.item.cb : undefined) != null))
         {
             this.close({all:true})
-            return item.item.cb(((_220_39_=item.item.arg) != null ? _220_39_ : item.item.text))
+            return item.item.cb(((_221_39_=item.item.arg) != null ? _221_39_ : item.item.text))
         }
         else if (!item.item.menu)
         {
             this.close({all:true})
-            return post.emit('menuAction',((_223_52_=item.item.action) != null ? _223_52_ : item.item.text),item.item)
+            return post.emit('menuAction',((_224_52_=item.item.action) != null ? _224_52_ : item.item.text),item.item)
         }
     }
 
@@ -371,14 +372,14 @@ Popup = (function ()
 
     Popup.prototype["focus"] = function ()
     {
-        var _264_20_
+        var _265_20_
 
         return (this.items != null ? this.items.focus() : undefined)
     }
 
     Popup.prototype["onFocusOut"] = function (event)
     {
-        var _268_34_
+        var _269_34_
 
         if (!(event.relatedTarget != null ? event.relatedTarget.classList.contains('popup') : undefined))
         {

@@ -5,6 +5,9 @@
 000  000   000          000     000  000  0000  000       000   000  
 000   000  00000000     000     000  000   000  000        0000000   
 ###
+
+import os from './os.js'
+
 class Keyinfo
     
     @forEvent: (event) =>
@@ -66,7 +69,7 @@ class Keyinfo
         
         index = combo.indexOf 'cmdctrl'
         if index >= 0
-            if os.platform() == 'darwin'
+            if os.isMac
                 combo = combo.replace 'cmdctrl' 'command'
                 combo = combo.replace 'alt+command' 'command+alt'
             else

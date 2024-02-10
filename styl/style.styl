@@ -7,16 +7,41 @@
 
 frameWidth          = 6px
 titlebarHeight      = 30px
-fontMono            = "Meslo LG S", "Liberation Mono", "Menlo", "Cousine", "Andale Mono", Arial
 
+@font-face 
+    font-family     titlebarFont
+    font-weight     normal
+    font-style      normal
+    src             url("/Bahnschrift.woff")
+
+@font-face 
+    font-family     fontMono
+    font-weight     normal
+    font-style      normal
+    src             url("/Meslo.woff")
+
+*
+    outline-width       0
+    outline-style       none
+    
 .test
-    font-size       40px
+    font-size       140px
     font-family     fontMono
     color           blue
+    
 .test:hover
     color           white
     cursor          pointer
 
+fill-abs()
+    position            absolute
+    bottom              0
+    right               0
+    left                0
+    top                 0
+    margin              0
+    padding             0
+        
 // 0000000     0000000   0000000    000   000
 // 000   000  000   000  000   000   000 000 
 // 0000000    000   000  000   000    00000  
@@ -27,13 +52,7 @@ body
     animation           300ms ease-in fadeIn
     font-family         fontMono
     font-size           14px
-    position            absolute
-    top                 0
-    bottom              0
-    left                0
-    right               0
-    margin              0
-    padding             0
+    fill-abs()
     
 // 00     00   0000000   000  000   000  
 // 000   000  000   000  000  0000  000  
@@ -45,12 +64,23 @@ body
     padding             frameWidth
     overflow            auto
     -webkit-user-select text
+    pointer-events      auto
     position            absolute
     top                 titlebarHeight
     left                0
     right               0
     bottom              0                
 
+#content
+    // background-color    red
+    position            absolute
+    top                 0
+    bottom              0
+    left                0
+    right               0
+    margin              0
+    padding             0
+    
 // 000000000  000  000000000  000      00000000  0000000     0000000   00000000 
 //    000     000     000     000      000       000   000  000   000  000   000
 //    000     000     000     000      0000000   0000000    000000000  0000000  

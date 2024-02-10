@@ -6,7 +6,8 @@
 000         0000000   000         0000000   000      
 ###
 
-import dom     from './elem.js'
+import os      from './os.js'
+import dom     from './dom.js'
 import post    from './post.js'
 import slash   from './slash.js'
 import keyinfo from './keyinfo.js'
@@ -19,7 +20,7 @@ function Popup
     @: (opt) ->
         
         @focusElem = document.activeElement
-        @items     = elem class:'popup' tabindex:3
+        @items     = elem class:'popup' tabindex:0
         @parent    = opt.parent
         @onClose   = opt.onClose
         
@@ -44,7 +45,7 @@ function Popup
                 div.item = item
                 div.addEventListener 'click' @onClick
                 if item.combo ? item.accel
-                    text = keyinfo.short os.platform() == 'darwin' ? (item.combo ? item.accel) : (item.accel ? item.combo)
+                    text = keyinfo.short os.isMac ? (item.combo ? item.accel) : (item.accel ? item.combo)
                     div.appendChild elem 'span' class:'popupCombo' text:text
                 else if item.menu 
                     div.appendChild elem 'span' class:'popupCombo' text:'▶'

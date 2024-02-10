@@ -11,7 +11,7 @@ Slash = (function ()
     function Slash ()
     {}
 
-    Slash["logErrors"] = false
+    Slash["logErrors"] = true
     Slash["path"] = function (p)
     {
         if (!p)
@@ -136,7 +136,7 @@ Slash = (function ()
     {
         var c, clmn, d, f, l, line, split
 
-        var _109_14_ = Slash.splitDrive(p); f = _109_14_[0]; d = _109_14_[1]
+        var _105_14_ = Slash.splitDrive(p); f = _105_14_[0]; d = _105_14_[1]
 
         split = String(f).split(':')
         if (split.length > 1)
@@ -167,7 +167,7 @@ Slash = (function ()
     {
         var c, f, l
 
-        var _121_16_ = Slash.splitFileLine(p); f = _121_16_[0]; l = _121_16_[1]; c = _121_16_[2]
+        var _117_16_ = Slash.splitFileLine(p); f = _117_16_[0]; l = _117_16_[1]; c = _117_16_[2]
 
         return [f,[c,l - 1]]
     }
@@ -181,7 +181,7 @@ Slash = (function ()
     {
         var f, l
 
-        var _126_14_ = Slash.splitFileLine(p); f = _126_14_[0]; l = _126_14_[1]
+        var _122_14_ = Slash.splitFileLine(p); f = _122_14_[0]; l = _122_14_[1]
 
         if (l > 1)
         {
@@ -385,14 +385,14 @@ Slash = (function ()
 
     Slash["tilde"] = function (p)
     {
-        var _252_36_
+        var _248_36_
 
         return (Slash.path(p) != null ? Slash.path(p).replace(Slash.home(),'~') : undefined)
     }
 
     Slash["untilde"] = function (p)
     {
-        var _253_36_
+        var _249_36_
 
         return (Slash.path(p) != null ? Slash.path(p).replace(/^\~/,Slash.home()) : undefined)
     }
@@ -435,9 +435,9 @@ Slash = (function ()
         {
             return '.'
         }
-        var _274_17_ = Slash.splitDrive(rel); rl = _274_17_[0]; rd = _274_17_[1]
+        var _270_17_ = Slash.splitDrive(rel); rl = _270_17_[0]; rd = _270_17_[1]
 
-        var _275_17_ = Slash.splitDrive(Slash.resolve(to)); tl = _275_17_[0]; td = _275_17_[1]
+        var _271_17_ = Slash.splitDrive(Slash.resolve(to)); tl = _271_17_[0]; td = _271_17_[1]
 
         if (rd && td && rd !== td)
         {
@@ -471,7 +471,7 @@ Slash = (function ()
 
     Slash["pkg"] = function (p)
     {
-        var _300_20_
+        var _296_20_
 
         if (((p != null ? p.length : undefined) != null))
         {
@@ -489,7 +489,7 @@ Slash = (function ()
 
     Slash["git"] = function (p, cb)
     {
-        var _312_20_
+        var _308_20_
 
         if (((p != null ? p.length : undefined) != null))
         {
@@ -795,9 +795,9 @@ Slash = (function ()
             {
                 Slash.textext = {}
                 var list = _k_.list(require('textextensions'))
-                for (var _493_24_ = 0; _493_24_ < list.length; _493_24_++)
+                for (var _489_24_ = 0; _489_24_ < list.length; _489_24_++)
                 {
-                    ext = list[_493_24_]
+                    ext = list[_489_24_]
                     Slash.textext[ext] = true
                 }
                 Slash.textext['crypt'] = true
@@ -826,32 +826,27 @@ Slash = (function ()
         }
     }
 
-    Slash["readText"] = function (p, cb)
+    Slash["fetchText"] = function (p, cb)
     {
-        if (_k_.isFunc(cb))
+        if (!(_k_.isFunc(cb)))
         {
-            try
+            console.error("Slash.fetchText -- no callback!")
+            return
+        }
+        return fetch(p).then(function (response)
+        {
+            if (response.ok)
             {
-                console.log('slash.readText',p)
-                return Neutralino.filesystem.readFile(p).catch(function (e)
-                {
-                    console.error(e)
-                }).then(function (text)
+                return response.text().then(function (text)
                 {
                     return cb(text)
                 })
             }
-            catch (err)
+            else
             {
-                console.error("Slash.readText -- " + String(err))
-                return cb('')
+                console.error('ERROR:',response)
             }
-        }
-        else
-        {
-            console.error("Slash.readText -- no callback!")
-            return ''
-        }
+        })
     }
 
     Slash["writeText"] = function (p, text, cb)

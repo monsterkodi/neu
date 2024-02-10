@@ -38,16 +38,18 @@ body {
   background-color: #222;
 }
 #titlebar .winbutton.gray {
-  color: #000;
+  color: #111;
 }
 #titlebar .winbutton svg {
+  animation: 6000ms ease-in-out winbuttonFadeStrokeOut;
   stroke-width: 2px;
-  stroke: #000;
+  stroke: #111;
 }
 #titlebar:hover .winbutton.gray {
   color: #444;
 }
 #titlebar:hover .winbutton svg {
+  animation: 300ms ease-in-out winbuttonFadeStroke;
   stroke: #444;
 }
 #titlebar .winbutton.gray:hover {
@@ -120,67 +122,67 @@ body {
 .task .message {
   color: #888;
 }
-@-moz-keyframes highlightTime {
-  0%, 100% {
-    color: #555;
+@-moz-keyframes winbuttonFadeStroke {
+  0% {
+    stroke: #111;
   }
-  50% {
-    color: #89f;
-  }
-}
-@-webkit-keyframes highlightTime {
-  0%, 100% {
-    color: #555;
-  }
-  50% {
-    color: #89f;
+  100% {
+    stroke: #444;
   }
 }
-@-o-keyframes highlightTime {
-  0%, 100% {
-    color: #555;
+@-webkit-keyframes winbuttonFadeStroke {
+  0% {
+    stroke: #111;
   }
-  50% {
-    color: #89f;
-  }
-}
-@keyframes highlightTime {
-  0%, 100% {
-    color: #555;
-  }
-  50% {
-    color: #89f;
+  100% {
+    stroke: #444;
   }
 }
-@-moz-keyframes highlightFile {
-  0%, 100% {
-    color: #ff0;
+@-o-keyframes winbuttonFadeStroke {
+  0% {
+    stroke: #111;
   }
-  50% {
-    color: #89f;
-  }
-}
-@-webkit-keyframes highlightFile {
-  0%, 100% {
-    color: #ff0;
-  }
-  50% {
-    color: #89f;
+  100% {
+    stroke: #444;
   }
 }
-@-o-keyframes highlightFile {
-  0%, 100% {
-    color: #ff0;
+@keyframes winbuttonFadeStroke {
+  0% {
+    stroke: #111;
   }
-  50% {
-    color: #89f;
+  100% {
+    stroke: #444;
   }
 }
-@keyframes highlightFile {
-  0%, 100% {
-    color: #ff0;
+@-moz-keyframes winbuttonFadeStrokeOut {
+  0% {
+    stroke: #444;
   }
-  50% {
-    color: #89f;
+  100% {
+    stroke: #111;
+  }
+}
+@-webkit-keyframes winbuttonFadeStrokeOut {
+  0% {
+    stroke: #444;
+  }
+  100% {
+    stroke: #111;
+  }
+}
+@-o-keyframes winbuttonFadeStrokeOut {
+  0% {
+    stroke: #444;
+  }
+  100% {
+    stroke: #111;
+  }
+}
+@keyframes winbuttonFadeStrokeOut {
+  0% {
+    stroke: #444;
+  }
+  100% {
+    stroke: #111;
   }
 }

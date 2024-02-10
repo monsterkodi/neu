@@ -7,6 +7,7 @@ var $, elem, stopEvent, Title
 import dom from './dom.js'
 import menu from './menu.js'
 import noon from './noon.js'
+import keyinfo from './keyinfo.js'
 import slash from './slash.js'
 import post from './post.js'
 $ = dom.$
@@ -18,7 +19,7 @@ Title = (function ()
 {
     function Title (opt)
     {
-        var imgSrc, pkg, _21_13_, _25_27_
+        var imgSrc, pkg, _22_13_, _26_27_
 
         this.opt = opt
     
@@ -29,9 +30,9 @@ Title = (function ()
         this["menuVisible"] = this["menuVisible"].bind(this)
         this["onMenuAction"] = this["onMenuAction"].bind(this)
         this["onTitlebar"] = this["onTitlebar"].bind(this)
-        this.opt = ((_21_13_=this.opt) != null ? _21_13_ : {})
+        this.opt = ((_22_13_=this.opt) != null ? _22_13_ : {})
         pkg = this.opt.pkg
-        this.elem = $(((_25_27_=this.opt.elem) != null ? _25_27_ : "#titlebar"))
+        this.elem = $(((_26_27_=this.opt.elem) != null ? _26_27_ : "#titlebar"))
         if (!this.elem)
         {
             return
@@ -87,11 +88,7 @@ Title = (function ()
         })
         this.topframe = elem({class:'topframe'})
         this.elem.appendChild(this.topframe)
-        if (this.opt.menu)
-        {
-            console.log('opt.menu',this.opt.menu)
-            this.initMenu()
-        }
+        this.initMenu()
     }
 
     Title.prototype["pushElem"] = function (elem)
@@ -111,10 +108,10 @@ Title = (function ()
 
     Title.prototype["setTitle"] = function (opt)
     {
-        var html, parts, _109_26_
+        var html, parts, _108_26_
 
         html = ""
-        parts = ((_109_26_=opt.title) != null ? _109_26_ : [])
+        parts = ((_108_26_=opt.title) != null ? _108_26_ : [])
         if (opt.pkg)
         {
             if (opt.pkg.name && _k_.in('name',parts))
@@ -185,15 +182,12 @@ Title = (function ()
         }
         if (_k_.empty(this.templateCache))
         {
-            console.log('load',this.opt.menu)
-            return noon.load(this.opt.menu,(function (tc)
+            return noon.fetch(this.opt.menu,(function (tc)
             {
-                var _165_40_
+                var _161_40_
 
-                console.log('loaded')
                 if (!_k_.empty(tc))
                 {
-                    console.log('tc',tc)
                     this.templateCache = this.makeTemplate(tc)
                     if ((this.opt.menuTemplate != null) && _k_.isFunc(this.opt.menuTemplate))
                     {
@@ -215,10 +209,8 @@ Title = (function ()
 
     Title.prototype["initFromCache"] = function ()
     {
-        console.log('templateCache',this.templateCache)
         this.menu = new menu({items:this.templateCache})
-        this.elem.insertBefore(this.menu.elem,this.elem.firstChild.nextSibling)
-        return this.hideMenu()
+        return this.elem.insertBefore(this.menu.elem,this.elem.firstChild.nextSibling)
     }
 
     Title.prototype["makeTemplate"] = function (obj)
@@ -231,7 +223,7 @@ Title = (function ()
             menuOrAccel = obj[text]
             tmpl.push(((function ()
             {
-                var item, _196_33_, _196_57_
+                var item, _191_33_, _191_57_
 
                 if (_k_.empty(menuOrAccel) && text.startsWith('-'))
                 {
@@ -277,15 +269,15 @@ Title = (function ()
 
     Title.prototype["showMenu"] = function ()
     {
-        var _211_68_, _211_75_
+        var _206_68_, _206_75_
 
         this.menu.elem.style.display = 'inline-block'
-        return ((_211_68_=this.menu) != null ? typeof (_211_75_=_211_68_.focus) === "function" ? _211_75_() : undefined : undefined)
+        return ((_206_68_=this.menu) != null ? typeof (_206_75_=_206_68_.focus) === "function" ? _206_75_() : undefined : undefined)
     }
 
     Title.prototype["hideMenu"] = function ()
     {
-        var _212_25_
+        var _207_25_
 
         ;(this.menu != null ? this.menu.close() : undefined)
         return this.menu.elem.style.display = 'none'
@@ -324,7 +316,7 @@ Title = (function ()
         key = keyinfo.forEvent(event).key
         combo = keyinfo.forEvent(event).combo
 
-        _k_.dbg(".", 226, 8, null, `mod ${mod} key ${key} combo ${combo}`)
+        _k_.dbg(".", 221, 8, null, `mod ${mod} key ${key} combo ${combo}`)
         mainMenu = this.menuTemplate()
         accels = sds.find.key(mainMenu,'accel')
         combos = sds.find.key(mainMenu,'combo')
@@ -334,9 +326,9 @@ Title = (function ()
             return 'unhandled'
         }
         var list = _k_.list(kepaths)
-        for (var _238_20_ = 0; _238_20_ < list.length; _238_20_++)
+        for (var _233_20_ = 0; _233_20_ < list.length; _233_20_++)
         {
-            keypath = list[_238_20_]
+            keypath = list[_233_20_]
             combos = sds.get(mainMenu,keypath).split(' ')
             combos = combos.map(function (c)
             {

@@ -2,7 +2,7 @@
 
 var _k_
 
-var $, getMousePos, getWindowPos, mousePos, setWindowPos, Window, windowPos
+var $, getMousePos, getWindowPos, mousePos, setWindowPos, stopEvent, Window, windowPos
 
 import dom from './dom.js'
 import elem from './elem.js'
@@ -11,6 +11,7 @@ import post from './post.js'
 import Title from './title.js'
 import Drag from './drag.js'
 $ = dom.$
+stopEvent = dom.stopEvent
 
 mousePos = kpos(0,0)
 windowPos = kpos(0,0)
@@ -57,7 +58,7 @@ Window = (function ()
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
         this["onDomLoaded"] = this["onDomLoaded"].bind(this)
         post.on('menuAction',this.onMenuAction)
-        window.titlebar = new Title({icon:'./icons/app.png',menu:'./menu.noon'})
+        window.titlebar = new Title({icon:'./icons/app.png',menu:'/menu.noon'})
         document.addEventListener('DOMContentLoaded',this.onDomLoaded)
     }
 
@@ -91,9 +92,10 @@ Window = (function ()
         {
             return Neutralino.window.create('/index.html')
         }})
-        return window.addEventListener('keypress',function ()
+        return window.addEventListener('keydown',function ()
         {
-            console.log('keypress')
+            console.log('window keydown',event)
+            return stopEvent(event)
         })
     }
 
