@@ -6,12 +6,13 @@
 00     00  000  000   000  0000000     0000000   00     00
 ###
 
-import dom   from './dom.js'
-import elem  from './elem.js'
-import kpos  from './pos.js'
-import post  from './post.js'
-import Title from './title.js'
-import Drag  from './drag.js'
+import dom     from './dom.js'
+import elem    from './elem.js'
+import kpos    from './pos.js'
+import post    from './post.js'
+import keyinfo from './keyinfo.js'
+import Title   from './title.js'
+import Drag    from './drag.js'
 
 { $, stopEvent } = dom
 
@@ -30,32 +31,52 @@ function Window
         window.titlebar = new Title icon:'./icons/app.png' menu:'/menu.noon'
         
         document.addEventListener 'DOMContentLoaded' @onDomLoaded
+        
+        Neutralino.events.on 'windowFocus' @onWindowFocus
+        Neutralino.events.on 'windowBlur'  @onWindowBlur
             
     onDomLoaded: =>
         
-        lastMousePos = kpos 0 0
-        mouseDelta   = kpos 0 0
+        # lastMousePos = kpos 0 0
+        # mouseDelta   = kpos 0 0
         
-        @drag = new Drag 
-            target: 'title'
-            onStart: -> getMousePos (mp) -> lastMousePos.copy mp
-            onMove:  -> 
-                getMousePos (mp) ->
-                    getWindowPos (pos) =>
-                        mouseDelta.copy(mp).sub lastMousePos
-                        lastMousePos.copy mp 
-                        mouseDelta.add pos
-                        setWindowPos mouseDelta
+        # @drag = new Drag 
+            # target:  'title'
+            # onStart: -> getMousePos (mp) -> lastMousePos.copy mp
+            # onMove:  -> 
+                # getMousePos (mp) ->
+                    # getWindowPos (pos) =>
+                        # mouseDelta.copy(mp).sub lastMousePos
+                        # lastMousePos.copy mp 
+                        # mouseDelta.add pos
+                        # setWindowPos mouseDelta
                         
         main =$ 'main'
-        elem class:'test' text:'window' parent:main, click: -> 
-            Neutralino.window.create '/index.html'
-            
-        window.addEventListener 'keydown' -> log 'window keydown' event; stopEvent event
         
-        # content =$ 'content'
-        # content.addEventListener 'keydown' (event) -> log 'content keydown' event; stopEvent event
-        # content.focus()
+        elem class:'test' text:'window' parent:main, click: => 
+            Neutralino.debug.log 'click!'
+            @createWindow()
+            
+        window.addEventListener 'keydown' @onKeyDown
+        window.addEventListener 'keyup'   @onKeyUp
+        
+        Neutralino.window.focus()
+        
+        window.requestAnimationFrame @animate
+        
+        main.focus()
+        
+    animate: =>
+        
+        window.requestAnimationFrame @animate
+        
+        getMousePos (mp) -> post.emit 'pointerMove' mp.x, mp.y
+        
+        now = window.performance.now()
+        delta = (now - @lastAnimationTime) * 0.001
+        @lastAnimationTime = now
+        
+        post.emit 'animationFrame' delta
             
     toggleMaximize: =>
         
@@ -64,16 +85,53 @@ function Window
                 Neutralino.window.unmaximize()
             else
                 Neutralino.window.maximize()
+                
+    createWindow: ->
         
-    onWindowFocus: (event) => log 'onFocus' event.detail
-    onWindowBlur:  (event) => log 'onBlur'  event.detail
+        Neutralino.window.getSize().catch((e)->error e).then (size) ->
+            Neutralino.window.create('/index.html', size).catch((e)->error e)
+        
+    onWindowFocus: (event) => Neutralino.debug.log 'onFocus' event.detail
+    onWindowBlur:  (event) => Neutralino.debug.log 'onBlur'  event.detail
     
     onMenuAction: (action) =>
-        
+        log 'menuAction' action
         switch action.toLowerCase()
-             
-            'maximize' ➜ @toggleMaximize()
-            'minimize' ➜ Neutralino.window.minimize()
-            'close'    ➜ Neutralino.app.exit()
+            'new window' ➜ @createWindow()
+            'maximize'   ➜ @toggleMaximize()
+            'minimize'   ➜ Neutralino.window.minimize()
+            'close'    
+            'quit'       ➜ Neutralino.app.exit()
+            
+    # 000   000  00000000  000   000
+    # 000  000   000        000 000
+    # 0000000    0000000     00000
+    # 000  000   000          000
+    # 000   000  00000000     000
+    
+    onKeyDown: (event) =>
+
+        stopEvent event
+    
+        info = keyinfo.forEvent event
+        # @modifiers = info.mod
+        
+        info.event = event
+
+        Neutralino.debug.log "#{info.combo}" if info.combo
+        
+        if 'unhandled' == window.titlebar.handleKeyInfo info
+            log 'keydown' info
+            
+            # post.emit 'combo' info.combo, info
+            # post.emit 'keydown' info
+    
+    onKeyUp: (event) =>
+        
+        info = keyinfo.forEvent event
+        # @modifiers = info.mod 
+        info.event = event
+        # log 'keyup' info
+        # post.emit 'keyup' info
 
 export Window

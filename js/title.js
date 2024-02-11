@@ -1,10 +1,11 @@
 // monsterkodi/kode 0.249.0
 
-var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, empty: function (l) {return l==='' || l===null || l===undefined || l!==l || typeof(l) === 'object' && Object.keys(l).length === 0}, isFunc: function (o) {return typeof o === 'function'}, isNum: function (o) {return !isNaN(o) && !isNaN(parseFloat(o)) && (isFinite(o) || o === Infinity || o === -Infinity)}, isStr: function (o) {return typeof o === 'string' || o instanceof String}, clone: function (o,v) { v ??= new Map(); if (Array.isArray(o)) { if (!v.has(o)) {var r = []; v.set(o,r); for (var i=0; i < o.length; i++) {if (!v.has(o[i])) { v.set(o[i],_k_.clone(o[i],v)) }; r.push(v.get(o[i]))}}; return v.get(o) } else if (typeof o == 'string') { if (!v.has(o)) {v.set(o,''+o)}; return v.get(o) } else if (o != null && typeof o == 'object' && o.constructor.name == 'Object') { if (!v.has(o)) { var k, r = {}; v.set(o,r); for (k in o) { if (!v.has(o[k])) { v.set(o[k],_k_.clone(o[k],v)) }; r[k] = v.get(o[k]) }; }; return v.get(o) } else {return o} }, dbg: function (f,l,c,m,...a) { console.log(f + ':' + l + ':' + c + (m ? ' ' + m + '\n' : '\n') + a.map(function (a) { return _k_.noon(a) }).join(' '))}, list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}, noon: function (obj) { var pad = function (s, l) { while (s.length < l) { s += ' ' }; return s }; var esc = function (k, arry) { var es, sp; if (0 <= k.indexOf('\n')) { sp = k.split('\n'); es = sp.map(function (s) { return esc(s,arry) }); es.unshift('...'); es.push('...'); return es.join('\n') } if (k === '' || k === '...' || _k_.in(k[0],[' ','#','|']) || _k_.in(k[k.length - 1],[' ','#','|'])) { k = '|' + k + '|' } else if (arry && /  /.test(k)) { k = '|' + k + '|' }; return k }; var pretty = function (o, ind, seen) { var k, kl, l, v, mk = 4; if (Object.keys(o).length > 1) { for (k in o) { if (Object.hasOwn(o,k)) { kl = parseInt(Math.ceil((k.length + 2) / 4) * 4); mk = Math.max(mk,kl); if (mk > 32) { mk = 32; break } } } }; l = []; var keyValue = function (k, v) { var i, ks, s, vs; s = ind; k = esc(k,true); if (k.indexOf('  ') > 0 && k[0] !== '|') { k = `|${k}|` } else if (k[0] !== '|' && k[k.length - 1] === '|') { k = '|' + k } else if (k[0] === '|' && k[k.length - 1] !== '|') { k += '|' }; ks = pad(k,Math.max(mk,k.length + 2)); i = pad(ind + '    ',mk); s += ks; vs = toStr(v,i,false,seen); if (vs[0] === '\n') { while (s[s.length - 1] === ' ') { s = s.substr(0,s.length - 1) } }; s += vs; while (s[s.length - 1] === ' ') { s = s.substr(0,s.length - 1) }; return s }; for (k in o) { if (Object.hasOwn(o,k)) { l.push(keyValue(k,o[k])) } }; return l.join('\n') }; var toStr = function (o, ind = '', arry = false, seen = []) { var s, t, v; if (!(o != null)) { if (o === null) { return 'null' }; if (o === undefined) { return 'undefined' }; return '<?>' }; switch (t = typeof(o)) { case 'string': {return esc(o,arry)}; case 'object': { if (_k_.in(o,seen)) { return '<v>' }; seen.push(o); if ((o.constructor != null ? o.constructor.name : undefined) === 'Array') { s = ind !== '' && arry && '.' || ''; if (o.length && ind !== '') { s += '\n' }; s += (function () { var result = []; var list = _k_.list(o); for (var li = 0; li < list.length; li++)  { v = list[li];result.push(ind + toStr(v,ind + '    ',true,seen))  } return result }).bind(this)().join('\n') } else if ((o.constructor != null ? o.constructor.name : undefined) === 'RegExp') { return o.source } else { s = (arry && '.\n') || ((ind !== '') && '\n' || ''); s += pretty(o,ind,seen) }; return s } default: return String(o) }; return '<???>' }; return toStr(obj) }}
+var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, empty: function (l) {return l==='' || l===null || l===undefined || l!==l || typeof(l) === 'object' && Object.keys(l).length === 0}, isFunc: function (o) {return typeof o === 'function'}, isNum: function (o) {return !isNaN(o) && !isNaN(parseFloat(o)) && (isFinite(o) || o === Infinity || o === -Infinity)}, isStr: function (o) {return typeof o === 'string' || o instanceof String}, clone: function (o,v) { v ??= new Map(); if (Array.isArray(o)) { if (!v.has(o)) {var r = []; v.set(o,r); for (var i=0; i < o.length; i++) {if (!v.has(o[i])) { v.set(o[i],_k_.clone(o[i],v)) }; r.push(v.get(o[i]))}}; return v.get(o) } else if (typeof o == 'string') { if (!v.has(o)) {v.set(o,''+o)}; return v.get(o) } else if (o != null && typeof o == 'object' && o.constructor.name == 'Object') { if (!v.has(o)) { var k, r = {}; v.set(o,r); for (k in o) { if (!v.has(o[k])) { v.set(o[k],_k_.clone(o[k],v)) }; r[k] = v.get(o[k]) }; }; return v.get(o) } else {return o} }, list: function (l) {return l != null ? typeof l.length === 'number' ? l : [] : []}}
 
 var $, elem, stopEvent, Title
 
 import dom from './dom.js'
+import sds from './sds.js'
 import menu from './menu.js'
 import noon from './noon.js'
 import keyinfo from './keyinfo.js'
@@ -19,7 +20,7 @@ Title = (function ()
 {
     function Title (opt)
     {
-        var imgSrc, pkg, _22_13_, _26_27_
+        var imgSrc, pkg, _23_13_, _27_27_
 
         this.opt = opt
     
@@ -30,13 +31,15 @@ Title = (function ()
         this["menuVisible"] = this["menuVisible"].bind(this)
         this["onMenuAction"] = this["onMenuAction"].bind(this)
         this["onTitlebar"] = this["onTitlebar"].bind(this)
-        this.opt = ((_22_13_=this.opt) != null ? _22_13_ : {})
+        this["onPointerMove"] = this["onPointerMove"].bind(this)
+        this.opt = ((_23_13_=this.opt) != null ? _23_13_ : {})
         pkg = this.opt.pkg
-        this.elem = $(((_26_27_=this.opt.elem) != null ? _26_27_ : "#titlebar"))
+        this.elem = $(((_27_27_=this.opt.elem) != null ? _27_27_ : "#titlebar"))
         if (!this.elem)
         {
             return
         }
+        post.on('pointerMove',this.onPointerMove)
         post.on('titlebar',this.onTitlebar)
         post.on('menuAction',this.onMenuAction)
         this.elem.addEventListener('dblclick',function (event)
@@ -55,7 +58,7 @@ Title = (function ()
         {
             return post.emit('menuAction','Open Menu')
         })
-        this.title = elem({class:'titlebar-title',id:'title'})
+        this.title = elem({class:'titlebar-title app-drag-region',id:'title'})
         this.elem.appendChild(this.title)
         this.setTitle(this.opt)
         this.minimize = elem({class:'winbutton minimize gray'})
@@ -106,12 +109,17 @@ Title = (function ()
         return this.title.style.display = 'none'
     }
 
+    Title.prototype["onPointerMove"] = function (x, y)
+    {
+        return Neutralino.debug.log(`mouse ${x} ${y}`)
+    }
+
     Title.prototype["setTitle"] = function (opt)
     {
-        var html, parts, _108_26_
+        var html, parts, _112_26_
 
         html = ""
-        parts = ((_108_26_=opt.title) != null ? _108_26_ : [])
+        parts = ((_112_26_=opt.title) != null ? _112_26_ : [])
         if (opt.pkg)
         {
             if (opt.pkg.name && _k_.in('name',parts))
@@ -184,7 +192,7 @@ Title = (function ()
         {
             return noon.fetch(this.opt.menu,(function (tc)
             {
-                var _161_40_
+                var _165_40_
 
                 if (!_k_.empty(tc))
                 {
@@ -223,7 +231,7 @@ Title = (function ()
             menuOrAccel = obj[text]
             tmpl.push(((function ()
             {
-                var item, _191_33_, _191_57_
+                var item, _195_33_, _195_57_
 
                 if (_k_.empty(menuOrAccel) && text.startsWith('-'))
                 {
@@ -269,15 +277,15 @@ Title = (function ()
 
     Title.prototype["showMenu"] = function ()
     {
-        var _206_68_, _206_75_
+        var _210_68_, _210_75_
 
         this.menu.elem.style.display = 'inline-block'
-        return ((_206_68_=this.menu) != null ? typeof (_206_75_=_206_68_.focus) === "function" ? _206_75_() : undefined : undefined)
+        return ((_210_68_=this.menu) != null ? typeof (_210_75_=_210_68_.focus) === "function" ? _210_75_() : undefined : undefined)
     }
 
     Title.prototype["hideMenu"] = function ()
     {
-        var _207_25_
+        var _211_25_
 
         ;(this.menu != null ? this.menu.close() : undefined)
         return this.menu.elem.style.display = 'none'
@@ -308,28 +316,32 @@ Title = (function ()
         }
     }
 
-    Title.prototype["handleKey"] = function (event)
+    Title.prototype["handleKeyInfo"] = function (modKeyComboEvent)
     {
-        var accels, combo, combos, item, kepaths, key, keypath, mainMenu, mod
+        var accels, action, combo, combos, event, item, key, keypath, menu, mod, _246_37_
 
-        mod = keyinfo.forEvent(event).mod
-        key = keyinfo.forEvent(event).key
-        combo = keyinfo.forEvent(event).combo
+        mod = modKeyComboEvent.mod
+        key = modKeyComboEvent.key
+        combo = modKeyComboEvent.combo
+        event = modKeyComboEvent.event
 
-        _k_.dbg(".", 221, 8, null, `mod ${mod} key ${key} combo ${combo}`)
-        mainMenu = this.menuTemplate()
-        accels = sds.find.key(mainMenu,'accel')
-        combos = sds.find.key(mainMenu,'combo')
-        kepaths = combos.concat(accels)
         if (_k_.empty(combo))
         {
             return 'unhandled'
         }
-        var list = _k_.list(kepaths)
-        for (var _233_20_ = 0; _233_20_ < list.length; _233_20_++)
+        menu = this.templateCache
+        if (_k_.empty(menu))
         {
-            keypath = list[_233_20_]
-            combos = sds.get(mainMenu,keypath).split(' ')
+            console.log('no menu')
+            return 'unhandled'
+        }
+        accels = sds.find.key(menu,'accel')
+        combos = sds.find.key(menu,'combo')
+        var list = _k_.list(combos.concat(accels))
+        for (var _240_20_ = 0; _240_20_ < list.length; _240_20_++)
+        {
+            keypath = list[_240_20_]
+            combos = sds.get(menu,keypath).split(' ')
             combos = combos.map(function (c)
             {
                 return keyinfo.convertCmdCtrl(c)
@@ -337,8 +349,11 @@ Title = (function ()
             if (_k_.in(combo,combos))
             {
                 keypath.pop()
-                item = sds.get(mainMenu,keypath)
-                return item
+                item = sds.get(menu,keypath)
+                action = ((_246_37_=item.action) != null ? _246_37_ : item.text)
+                console.log('menuAction',action)
+                post.emit('menuAction',action)
+                return action
             }
         }
         return 'unhandled'

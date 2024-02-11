@@ -7,6 +7,7 @@
 ###
 
 import dom      from './dom.js'    # use dom
+import sds      from './sds.js'
 import menu     from './menu.js'   
 import noon     from './noon.js'  
 import keyinfo  from './keyinfo.js'  
@@ -26,9 +27,10 @@ function Title
         @elem =$ @opt.elem ? "#titlebar"
         
         return if not @elem
-
-        post.on 'titlebar'   @onTitlebar
-        post.on 'menuAction' @onMenuAction
+        
+        post.on 'pointerMove' @onPointerMove
+        post.on 'titlebar'    @onTitlebar
+        post.on 'menuAction'  @onMenuAction
         
         @elem.addEventListener 'dblclick' (event) -> 
             stopEvent event 
@@ -43,7 +45,7 @@ function Title
         @elem.appendChild @winicon
         @winicon.addEventListener 'click' -> post.emit 'menuAction' 'Open Menu'   
         
-        @title = elem class:'titlebar-title' id:'title'
+        @title = elem class:'titlebar-title app-drag-region' id:'title'
         @elem.appendChild @title
         
         @setTitle @opt
@@ -94,6 +96,8 @@ function Title
             
     showTitle: -> @title.style.display = 'initial'
     hideTitle: -> @title.style.display = 'none'
+    
+    onPointerMove: (x, y) => Neutralino.debug.log "mouse #{x} #{y}"
     
     #  0000000  00000000  000000000  000000000  000  000000000  000      00000000  
     # 000       000          000        000     000     000     000      000       
@@ -214,31 +218,35 @@ function Title
     # 000  000   000          000
     # 000   000  00000000     000
 
-    handleKey: (event) ->
+    handleKeyInfo: (modKeyComboEvent) ->
 
-        { mod, key, combo } = keyinfo.forEvent event
+        { mod, key, combo, event } = modKeyComboEvent
         
-        dbg "mod #{mod} key #{key} combo #{combo}"
-        
-        mainMenu = @menuTemplate()
-            
-        accels = sds.find.key mainMenu, 'accel'
-        combos = sds.find.key mainMenu, 'combo'
-        
-        kepaths = combos.concat accels # swap on win?
+        # log "mod #{mod} key #{key} combo #{combo}"
         
         if empty combo
+            # log 'no combo'
             return 'unhandled'
         
-        for keypath in kepaths
-            combos = sds.get(mainMenu, keypath).split ' '
+        menu = @templateCache
+        
+        if empty menu
+            log 'no menu'
+            return 'unhandled'
+        
+        accels = sds.find.key menu, 'accel'
+        combos = sds.find.key menu, 'combo'
+        
+        for keypath in combos.concat accels # swap on win?
+            combos = sds.get(menu, keypath).split ' '
             combos = combos.map (c) -> keyinfo.convertCmdCtrl c
             if combo in combos
                 keypath.pop()
-                item = sds.get mainMenu, keypath
-                # dbg 'kxk.title.handleKey item' item
-                # post.emit 'menuAction' item.action ? item.text, item
-                return item
+                item = sds.get menu, keypath
+                action = item.action ? item.text
+                log 'menuAction' action
+                post.emit 'menuAction' action
+                return action
 
         'unhandled'
             

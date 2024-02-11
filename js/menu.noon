@@ -5,9 +5,11 @@
 # 000   000  00000000  000   000   0000000
 
 neu
+    New Window              cmdctrl+n
+    -
     About                   alt+cmdctrl+/
     --
-    Quit                    cmdctrl+q q
+    Quit                    cmdctrl+q cmdctrl+w
 
 # 000   000  000  000   000  0000000     0000000   000   000
 # 000 0 000  000  0000  000  000   000  000   000  000 0 000
@@ -16,13 +18,14 @@ neu
 # 00     00  000  000   000  0000000     0000000   00     00
 
 Window
-    Toggle Menu             alt+m m
+    Toggle Menu             alt+m
     --
-    Minimize                alt+ctrl+shift+m
-    Maximize                alt+ctrl+m
-    Hide                    command+h h
+    Minimize                cmdctrl+m
+    Maximize                alt+cmdctrl+m
     ---
     Screenshot              f3
     Reload                  alt+cmdctrl+l
-    DevTools                alt+cmdctrl+i
+    ----
+    Close                   cmdctrl+w
+    # DevTools                alt+cmdctrl+i
     

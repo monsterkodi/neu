@@ -114,7 +114,6 @@ Popup = (function ()
         {
             this.select(this.items.firstChild,{selectFirstItem:false})
         }
-        post.emit('popup','opened')
     }
 
     Popup.prototype["close"] = function (opt = {})
@@ -127,7 +126,6 @@ Popup = (function ()
             {
                 return
             }
-            post.emit('popup','closed')
         }
         ;(this.popup != null ? this.popup.close({focus:false}) : undefined)
         delete this.popup
@@ -318,7 +316,7 @@ Popup = (function ()
         else if (!item.item.menu)
         {
             this.close({all:true})
-            return post.emit('menuAction',((_224_52_=item.item.action) != null ? _224_52_ : item.item.text),item.item)
+            return post.emit('menuAction',((_224_52_=item.item.action) != null ? _224_52_ : item.item.text))
         }
     }
 

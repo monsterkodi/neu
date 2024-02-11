@@ -12,22 +12,24 @@ titlebarHeight      = 30px
     font-family     titlebarFont
     font-weight     normal
     font-style      normal
-    src             url("/Bahnschrift.woff")
+    src             url("/font/Bahnschrift.woff")
 
 @font-face 
     font-family     fontMono
     font-weight     normal
     font-style      normal
-    src             url("/Meslo.woff")
+    src             url("/font/Meslo.woff")
 
 *
     outline-width       0
     outline-style       none
     
 .test
-    font-size       140px
+    font-size       40px
     font-family     fontMono
     color           blue
+    text-align      center
+    width           100%
     
 .test:hover
     color           white
@@ -61,6 +63,7 @@ body
 // 000   000  000   000  000  000   000  
 
 #main
+    -webkit-user-select none
     padding             frameWidth
     overflow            auto
     -webkit-user-select text
@@ -98,6 +101,7 @@ body
     cursor              pointer
 
 .titlebar-title
+    -webkit-app-region  drag
     cursor              grab
     display             inline-block
     flex-direction      row

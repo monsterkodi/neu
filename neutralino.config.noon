@@ -24,13 +24,13 @@ modes
                     window
                         icon                /js/icons/app.png
                         title               neu
-                        width               800
-                        height              500
-                        minWidth            100
-                        minHeight           100
+                        width               400
+                        height              400
+                        minWidth            200
+                        minHeight           200
                         center              true
                         resizable           true
-                        borderless          true
+                        borderless          false
                         enableInspector     true
                         exitProcessOnClose  true
 cli

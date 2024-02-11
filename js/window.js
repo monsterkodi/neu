@@ -8,6 +8,7 @@ import dom from './dom.js'
 import elem from './elem.js'
 import kpos from './pos.js'
 import post from './post.js'
+import keyinfo from './keyinfo.js'
 import Title from './title.js'
 import Drag from './drag.js'
 $ = dom.$
@@ -52,51 +53,51 @@ Window = (function ()
 {
     function Window ()
     {
+        this["onKeyUp"] = this["onKeyUp"].bind(this)
+        this["onKeyDown"] = this["onKeyDown"].bind(this)
         this["onMenuAction"] = this["onMenuAction"].bind(this)
         this["onWindowBlur"] = this["onWindowBlur"].bind(this)
         this["onWindowFocus"] = this["onWindowFocus"].bind(this)
         this["toggleMaximize"] = this["toggleMaximize"].bind(this)
+        this["animate"] = this["animate"].bind(this)
         this["onDomLoaded"] = this["onDomLoaded"].bind(this)
         post.on('menuAction',this.onMenuAction)
         window.titlebar = new Title({icon:'./icons/app.png',menu:'/menu.noon'})
         document.addEventListener('DOMContentLoaded',this.onDomLoaded)
+        Neutralino.events.on('windowFocus',this.onWindowFocus)
+        Neutralino.events.on('windowBlur',this.onWindowBlur)
     }
 
     Window.prototype["onDomLoaded"] = function ()
     {
-        var lastMousePos, main, mouseDelta
+        var main
 
-        lastMousePos = kpos(0,0)
-        mouseDelta = kpos(0,0)
-        this.drag = new Drag({target:'title',onStart:function ()
-        {
-            return getMousePos(function (mp)
-            {
-                return lastMousePos.copy(mp)
-            })
-        },onMove:function ()
-        {
-            return getMousePos(function (mp)
-            {
-                return getWindowPos((function (pos)
-                {
-                    mouseDelta.copy(mp).sub(lastMousePos)
-                    lastMousePos.copy(mp)
-                    mouseDelta.add(pos)
-                    return setWindowPos(mouseDelta)
-                }).bind(this))
-            })
-        }})
         main = $('main')
-        elem({class:'test',text:'window',parent:main,click:function ()
+        elem({class:'test',text:'window',parent:main,click:(function ()
         {
-            return Neutralino.window.create('/index.html')
-        }})
-        return window.addEventListener('keydown',function ()
+            Neutralino.debug.log('click!')
+            return this.createWindow()
+        }).bind(this)})
+        window.addEventListener('keydown',this.onKeyDown)
+        window.addEventListener('keyup',this.onKeyUp)
+        Neutralino.window.focus()
+        window.requestAnimationFrame(this.animate)
+        return main.focus()
+    }
+
+    Window.prototype["animate"] = function ()
+    {
+        var delta, now
+
+        window.requestAnimationFrame(this.animate)
+        getMousePos(function (mp)
         {
-            console.log('window keydown',event)
-            return stopEvent(event)
+            return post.emit('pointerMove',mp.x,mp.y)
         })
+        now = window.performance.now()
+        delta = (now - this.lastAnimationTime) * 0.001
+        this.lastAnimationTime = now
+        return post.emit('animationFrame',delta)
     }
 
     Window.prototype["toggleMaximize"] = function ()
@@ -114,20 +115,38 @@ Window = (function ()
         })
     }
 
+    Window.prototype["createWindow"] = function ()
+    {
+        return Neutralino.window.getSize().catch(function (e)
+        {
+            console.error(e)
+        }).then(function (size)
+        {
+            return Neutralino.window.create('/index.html',size).catch(function (e)
+            {
+                console.error(e)
+            })
+        })
+    }
+
     Window.prototype["onWindowFocus"] = function (event)
     {
-        console.log('onFocus',event.detail)
+        return Neutralino.debug.log('onFocus',event.detail)
     }
 
     Window.prototype["onWindowBlur"] = function (event)
     {
-        console.log('onBlur',event.detail)
+        return Neutralino.debug.log('onBlur',event.detail)
     }
 
     Window.prototype["onMenuAction"] = function (action)
     {
+        console.log('menuAction',action)
         switch (action.toLowerCase())
         {
+            case 'new window':
+                return this.createWindow()
+
             case 'maximize':
                 return this.toggleMaximize()
 
@@ -135,10 +154,36 @@ Window = (function ()
                 return Neutralino.window.minimize()
 
             case 'close':
+            case 'quit':
                 return Neutralino.app.exit()
 
         }
 
+    }
+
+    Window.prototype["onKeyDown"] = function (event)
+    {
+        var info
+
+        stopEvent(event)
+        info = keyinfo.forEvent(event)
+        info.event = event
+        if (info.combo)
+        {
+            Neutralino.debug.log(`${info.combo}`)
+        }
+        if ('unhandled' === window.titlebar.handleKeyInfo(info))
+        {
+            console.log('keydown',info)
+        }
+    }
+
+    Window.prototype["onKeyUp"] = function (event)
+    {
+        var info
+
+        info = keyinfo.forEvent(event)
+        return info.event = event
     }
 
     return Window

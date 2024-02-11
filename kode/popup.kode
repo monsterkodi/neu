@@ -72,7 +72,7 @@ function Popup
         if opt.selectFirstItem != false
             @select @items.firstChild, selectFirstItem:false
             
-        post.emit 'popup' 'opened'
+        # post.emit 'popup' 'opened'
         
     #  0000000  000       0000000    0000000  00000000  
     # 000       000      000   000  000       000       
@@ -85,7 +85,7 @@ function Popup
         if empty(@parent) or @parentMenu()?.elem?.classList.contains 'menu'
             if 'skip' == @onClose?()
                 return
-            post.emit 'popup' 'closed'
+            # post.emit 'popup' 'closed'
         
         @popup?.close focus:false
         delete @popup
@@ -221,7 +221,7 @@ function Popup
             item.item.cb item.item.arg ? item.item.text
         else if not item.item.menu
             @close all:true
-            post.emit 'menuAction' item.item.action ? item.item.text, item.item
+            post.emit 'menuAction' item.item.action ? item.item.text#, item.item
 
     toggle: (item) ->
         

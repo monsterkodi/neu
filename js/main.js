@@ -38,4 +38,5 @@ onWindowClose = function ()
 Neutralino.init()
 Neutralino.events.on('trayMenuItemClicked',onTrayMenuItemClicked)
 Neutralino.events.on('windowClose',onWindowClose)
+Neutralino.window.focus()
 win = new Window
