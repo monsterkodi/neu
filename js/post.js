@@ -1,6 +1,6 @@
 // monsterkodi/kode 0.249.0
 
-var _k_
+var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}}
 
 var POST, poster
 
@@ -52,10 +52,13 @@ class Poster extends EventTarget
     {
         var event
 
-        Neutralino.debug.log(`post.emit ${type} ${args}`).catch(function (e)
+        if (!(_k_.in(type,['pointerMove','animationFrame'])))
         {
-            console.error(e)
-        })
+            Neutralino.debug.log(`post.emit ${type} ${args}`).catch(function (e)
+            {
+                console.error(e)
+            })
+        }
         event = new Event(POST)
         event.event = type
         event.args = args

@@ -53,9 +53,9 @@ function Window
                         
         main =$ 'main'
         
-        elem class:'test' text:'window' parent:main, click: => 
+        elem class:'test' text:'hello' parent:main, click: => 
             Neutralino.debug.log 'click!'
-            @createWindow()
+            # @createWindow()
             
         window.addEventListener 'keydown' @onKeyDown
         window.addEventListener 'keyup'   @onKeyUp
@@ -91,8 +91,8 @@ function Window
         Neutralino.window.getSize().catch((e)->error e).then (size) ->
             Neutralino.window.create('/index.html', size).catch((e)->error e)
         
-    onWindowFocus: (event) => Neutralino.debug.log 'onFocus' event.detail
-    onWindowBlur:  (event) => Neutralino.debug.log 'onBlur'  event.detail
+    onWindowFocus: (event) => post.emit 'windowFocus' #Neutralino.debug.log 'onFocus' event.detail
+    onWindowBlur:  (event) => post.emit 'windowBlur'  #Neutralino.debug.log 'onBlur'  event.detail
     
     onMenuAction: (action) =>
         log 'menuAction' action

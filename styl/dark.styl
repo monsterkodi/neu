@@ -29,6 +29,11 @@ borderRadius        = 10px
 frameBorder         = frameWidth solid frameColor
 bodyBorder          = 1px solid #222
 
+fadeInAnim()          
+    animation           300ms ease-in-out fadeIn
+fadeOutAnim()         
+    animation           300ms ease-in-out fadeOut
+
 // 0000000     0000000   0000000    000   000  
 // 000   000  000   000  000   000   000 000   
 // 0000000    000   000  000   000    00000    
@@ -79,26 +84,21 @@ body
         &.gray
             background-color titleColor
             
-#titlebar .winbutton.gray
-    color               winbuttonBlurColor
 #titlebar .winbutton svg
-    animation           6000ms ease-in-out winbuttonFadeStrokeOut
     stroke-width        2px
     stroke              winbuttonBlurColor
 
-#titlebar:hover .winbutton.gray            
-    color               winbuttonFocusColor
-#titlebar:hover .winbutton svg
-    animation           300ms ease-in-out winbuttonFadeStroke
+#titlebar.focus .winbutton svg
+    fadeInAnim()
     stroke              winbuttonFocusColor
+
+#titlebar.blur .winbutton svg
+    fadeOutAnim()
+    stroke              winbuttonBlurColor
     
-#titlebar .winbutton.gray:hover    
-    color               winbuttonHoverColor
 #titlebar .winbutton:hover svg    
     stroke              winbuttonHoverColor
         
-#titlebar .winbutton.gray:active
-    color               winbuttonActiveColor
 #titlebar .winbutton:active svg    
     stroke              winbuttonActiveColor
 
@@ -117,6 +117,15 @@ body
     
 .menu:focus .menuItem.selected
     color               textFocusColor
+    
+#titlebar.focus .menu
+    fadeInAnim()
+    opacity             1
+
+#titlebar.blur .menu
+    fadeOutAnim()
+    opacity             0
+    
     
 // 00000000    0000000   00000000   000   000  00000000
 // 000   000  000   000  000   000  000   000  000   000
@@ -186,6 +195,19 @@ body
 //   000   000  000  0000  000  000 0 000  000   000     000     000  000   000  000  0000
 //   000   000  000   000  000  000   000  000   000     000     000   0000000   000   000
 
+
+@keyframes fadeIn
+    0%
+        opacity         0
+    100%  
+        opacity         1
+
+@keyframes fadeOut
+    0%  
+        opacity         1
+    100%
+        opacity         0
+        
 @keyframes winbuttonFadeStroke
     0%
         stroke          winbuttonBlurColor

@@ -73,10 +73,9 @@ Window = (function ()
         var main
 
         main = $('main')
-        elem({class:'test',text:'window',parent:main,click:(function ()
+        elem({class:'test',text:'hello',parent:main,click:(function ()
         {
-            Neutralino.debug.log('click!')
-            return this.createWindow()
+            return Neutralino.debug.log('click!')
         }).bind(this)})
         window.addEventListener('keydown',this.onKeyDown)
         window.addEventListener('keyup',this.onKeyUp)
@@ -131,12 +130,12 @@ Window = (function ()
 
     Window.prototype["onWindowFocus"] = function (event)
     {
-        return Neutralino.debug.log('onFocus',event.detail)
+        return post.emit('windowFocus')
     }
 
     Window.prototype["onWindowBlur"] = function (event)
     {
-        return Neutralino.debug.log('onBlur',event.detail)
+        return post.emit('windowBlur')
     }
 
     Window.prototype["onMenuAction"] = function (action)

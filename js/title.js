@@ -31,10 +31,13 @@ Title = (function ()
         this["menuVisible"] = this["menuVisible"].bind(this)
         this["onMenuAction"] = this["onMenuAction"].bind(this)
         this["onTitlebar"] = this["onTitlebar"].bind(this)
+        this["onWindowBlur"] = this["onWindowBlur"].bind(this)
+        this["onWindowFocus"] = this["onWindowFocus"].bind(this)
         this["onPointerMove"] = this["onPointerMove"].bind(this)
         this.opt = ((_23_13_=this.opt) != null ? _23_13_ : {})
         pkg = this.opt.pkg
         this.elem = $(((_27_27_=this.opt.elem) != null ? _27_27_ : "#titlebar"))
+        this.elem.classList.add('focus')
         if (!this.elem)
         {
             return
@@ -42,6 +45,8 @@ Title = (function ()
         post.on('pointerMove',this.onPointerMove)
         post.on('titlebar',this.onTitlebar)
         post.on('menuAction',this.onMenuAction)
+        post.on('windowFocus',this.onWindowFocus)
+        post.on('windowBlur',this.onWindowBlur)
         this.elem.addEventListener('dblclick',function (event)
         {
             stopEvent(event)
@@ -110,16 +115,26 @@ Title = (function ()
     }
 
     Title.prototype["onPointerMove"] = function (x, y)
+    {}
+
+    Title.prototype["onWindowFocus"] = function ()
     {
-        return Neutralino.debug.log(`mouse ${x} ${y}`)
+        this.elem.classList.remove('blur')
+        return this.elem.classList.add('focus')
+    }
+
+    Title.prototype["onWindowBlur"] = function ()
+    {
+        this.elem.classList.remove('focus')
+        return this.elem.classList.add('blur')
     }
 
     Title.prototype["setTitle"] = function (opt)
     {
-        var html, parts, _112_26_
+        var html, parts, _124_26_
 
         html = ""
-        parts = ((_112_26_=opt.title) != null ? _112_26_ : [])
+        parts = ((_124_26_=opt.title) != null ? _124_26_ : [])
         if (opt.pkg)
         {
             if (opt.pkg.name && _k_.in('name',parts))
@@ -192,7 +207,7 @@ Title = (function ()
         {
             return noon.fetch(this.opt.menu,(function (tc)
             {
-                var _165_40_
+                var _177_40_
 
                 if (!_k_.empty(tc))
                 {
@@ -231,7 +246,7 @@ Title = (function ()
             menuOrAccel = obj[text]
             tmpl.push(((function ()
             {
-                var item, _195_33_, _195_57_
+                var item, _207_33_, _207_57_
 
                 if (_k_.empty(menuOrAccel) && text.startsWith('-'))
                 {
@@ -277,15 +292,15 @@ Title = (function ()
 
     Title.prototype["showMenu"] = function ()
     {
-        var _210_68_, _210_75_
+        var _222_68_, _222_75_
 
         this.menu.elem.style.display = 'inline-block'
-        return ((_210_68_=this.menu) != null ? typeof (_210_75_=_210_68_.focus) === "function" ? _210_75_() : undefined : undefined)
+        return ((_222_68_=this.menu) != null ? typeof (_222_75_=_222_68_.focus) === "function" ? _222_75_() : undefined : undefined)
     }
 
     Title.prototype["hideMenu"] = function ()
     {
-        var _211_25_
+        var _223_25_
 
         ;(this.menu != null ? this.menu.close() : undefined)
         return this.menu.elem.style.display = 'none'
@@ -318,7 +333,7 @@ Title = (function ()
 
     Title.prototype["handleKeyInfo"] = function (modKeyComboEvent)
     {
-        var accels, action, combo, combos, event, item, key, keypath, menu, mod, _246_37_
+        var accels, action, combo, combos, event, item, key, keypath, menu, mod, _258_37_
 
         mod = modKeyComboEvent.mod
         key = modKeyComboEvent.key
@@ -338,9 +353,9 @@ Title = (function ()
         accels = sds.find.key(menu,'accel')
         combos = sds.find.key(menu,'combo')
         var list = _k_.list(combos.concat(accels))
-        for (var _240_20_ = 0; _240_20_ < list.length; _240_20_++)
+        for (var _252_20_ = 0; _252_20_ < list.length; _252_20_++)
         {
-            keypath = list[_240_20_]
+            keypath = list[_252_20_]
             combos = sds.get(menu,keypath).split(' ')
             combos = combos.map(function (c)
             {
@@ -350,7 +365,7 @@ Title = (function ()
             {
                 keypath.pop()
                 item = sds.get(menu,keypath)
-                action = ((_246_37_=item.action) != null ? _246_37_ : item.text)
+                action = ((_258_37_=item.action) != null ? _258_37_ : item.text)
                 console.log('menuAction',action)
                 post.emit('menuAction',action)
                 return action

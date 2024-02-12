@@ -37,29 +37,20 @@ body {
 #titlebar .winbutton:active.gray {
   background-color: #222;
 }
-#titlebar .winbutton.gray {
-  color: #111;
-}
 #titlebar .winbutton svg {
-  animation: 6000ms ease-in-out winbuttonFadeStrokeOut;
   stroke-width: 2px;
   stroke: #111;
 }
-#titlebar:hover .winbutton.gray {
-  color: #444;
-}
-#titlebar:hover .winbutton svg {
-  animation: 300ms ease-in-out winbuttonFadeStroke;
+#titlebar.focus .winbutton svg {
+  animation: 300ms ease-in-out fadeIn;
   stroke: #444;
 }
-#titlebar .winbutton.gray:hover {
-  color: #999;
+#titlebar.blur .winbutton svg {
+  animation: 300ms ease-in-out fadeOut;
+  stroke: #111;
 }
 #titlebar .winbutton:hover svg {
   stroke: #999;
-}
-#titlebar .winbutton.gray:active {
-  color: #fff;
 }
 #titlebar .winbutton:active svg {
   stroke: #fff;
@@ -73,6 +64,14 @@ body {
 }
 .menu:focus .menuItem.selected {
   color: #fff;
+}
+#titlebar.focus .menu {
+  animation: 300ms ease-in-out fadeIn;
+  opacity: 1;
+}
+#titlebar.blur .menu {
+  animation: 300ms ease-in-out fadeOut;
+  opacity: 0;
 }
 .popup {
   background-color: #111;
@@ -121,6 +120,70 @@ body {
 }
 .task .message {
   color: #888;
+}
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 @-moz-keyframes winbuttonFadeStroke {
   0% {
