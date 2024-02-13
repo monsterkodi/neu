@@ -30,7 +30,7 @@ modes
                         minHeight           200
                         center              true
                         resizable           true
-                        borderless          false
+                        borderless          true
                         enableInspector     true
                         exitProcessOnClose  true
 cli
